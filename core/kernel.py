@@ -27,6 +27,9 @@ from agents.translate_agent import TranslateAgent
 from agents.summarize_agent import SummarizeAgent
 from agents.rewrite_agent import RewriteAgent
 from agents.role_agent import RoleAgent
+from agents.git_agent import GitAgent
+from agents.symbols_agent import SymbolsAgent
+from agents.test_agent import TestAgent
 
 
 class Kernel:
@@ -73,6 +76,9 @@ class Kernel:
         self.agent_manager["summarize"] = SummarizeAgent(context)
         self.agent_manager["rewrite"] = RewriteAgent(context)
         self.agent_manager["role"] = RoleAgent(context)
+        self.agent_manager["git"] = GitAgent(context)
+        self.agent_manager["symbols"] = SymbolsAgent(context)
+        self.agent_manager["test"] = TestAgent(context)
 
         print(f"Knowledge loaded: {knowledge_service.get_stats()}")
         print("Provider connected successfully.\n")

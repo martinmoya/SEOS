@@ -1,41 +1,40 @@
 """
-Document Translation Service.
-Orchestrates document translation preserving format where possible.
+Document Processing Service.
+Orchestrates document AI operations preserving format.
 """
 
 from pathlib import Path
-from processors.translation_processor import TranslationProcessor
 
 
-class DocumentTranslationService:
-    def __init__(self, processor: TranslationProcessor):
+class DocumentProcessingService:
+    def __init__(self, processor):
         self.processor = processor
 
-    def translate(self, source: Path, language: str) -> Path:
+    def process(self, source: Path, output_suffix: str) -> Path:
         suffix = source.suffix.lower()
-        destination = source.with_suffix(f".{language}{source.suffix}")
+        destination = source.with_suffix(f".{output_suffix}{source.suffix}")
 
         if suffix in (".txt", ".md"):
-            self._translate_text(source, destination)
+            self._process_text(source, destination)
         elif suffix == ".pdf":
-            self._translate_pdf(source, destination)
+            self._process_pdf(source, destination)
         elif suffix == ".docx":
-            self._translate_docx(source, destination)
+            self._process_docx(source, destination)
         elif suffix == ".xlsx":
-            self._translate_xlsx(source, destination)
+            self._process_xlsx(source, destination)
         elif suffix == ".pptx":
-            self._translate_pptx(source, destination)
+            self._process_pptx(source, destination)
         else:
             raise ValueError(f"Unsupported format: {suffix}")
 
         return destination
 
-    def _translate_text(self, source: Path, dest: Path):
+    def _process_text(self, source: Path, dest: Path):
         text = source.read_text(encoding="utf-8")
         translated = self.processor.process(text)
         dest.write_text(translated, encoding="utf-8")
 
-    def _translate_pdf(self, source: Path, dest: Path):
+    def _process_pdf(self, source: Path, dest: Path):
         from pypdf import PdfReader
         from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak
         from reportlab.lib.styles import getSampleStyleSheet
@@ -59,7 +58,7 @@ class DocumentTranslationService:
         pdf = SimpleDocTemplate(str(dest))
         pdf.build(story)
 
-    def _translate_docx(self, source: Path, dest: Path):
+    def _process_docx(self, source: Path, dest: Path):
         from docx import Document
 
         doc = Document(str(source))
@@ -67,8 +66,6 @@ class DocumentTranslationService:
         for paragraph in doc.paragraphs:
             if paragraph.text.strip():
                 translated = self.processor.process(paragraph.text)
-                # Preserve formatting by replacing text in the first run
-                # and clearing the rest.
                 if paragraph.runs:
                     paragraph.runs[0].text = translated
                     for run in paragraph.runs[1:]:
@@ -76,7 +73,6 @@ class DocumentTranslationService:
                 else:
                     paragraph.text = translated
 
-        # Translate tables
         for table in doc.tables:
             for row in table.rows:
                 for cell in row.cells:
@@ -92,7 +88,7 @@ class DocumentTranslationService:
 
         doc.save(str(dest))
 
-    def _translate_xlsx(self, source: Path, dest: Path):
+    def _process_xlsx(self, source: Path, dest: Path):
         from openpyxl import load_workbook
 
         wb = load_workbook(str(source))
@@ -109,7 +105,7 @@ class DocumentTranslationService:
 
         wb.save(str(dest))
 
-    def _translate_pptx(self, source: Path, dest: Path):
+    def _process_pptx(self, source: Path, dest: Path):
         from pptx import Presentation
 
         prs = Presentation(str(source))
@@ -118,7 +114,6 @@ class DocumentTranslationService:
             for shape in slide.shapes:
                 if shape.has_text_frame:
                     for paragraph in shape.text_frame.paragraphs:
-                        # Translate run by run to preserve character formatting
                         for run in paragraph.runs:
                             if run.text.strip():
                                 run.text = self.processor.process(run.text)

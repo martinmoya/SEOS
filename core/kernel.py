@@ -22,6 +22,8 @@ from agents.info_agent import InfoAgent
 from agents.tree_agent import TreeAgent
 from agents.find_agent import FindAgent
 from agents.translate_agent import TranslateAgent
+from agents.summarize_agent import SummarizeAgent
+from agents.rewrite_agent import RewriteAgent
 
 
 class Kernel:
@@ -55,6 +57,8 @@ class Kernel:
         self.agent_manager["tree"] = TreeAgent(context)
         self.agent_manager["find"] = FindAgent(context)
         self.agent_manager["translate"] = TranslateAgent(context)
+        self.agent_manager["summarize"] = SummarizeAgent(context)
+        self.agent_manager["rewrite"] = RewriteAgent(context)
 
         print("Provider connected successfully.\n")
 

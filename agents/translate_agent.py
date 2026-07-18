@@ -5,7 +5,7 @@ Translate Agent.
 from pathlib import Path
 from agents.base_project_agent import BaseProjectAgent
 from processors.translation_processor import TranslationProcessor
-from services.document_translation_service import DocumentTranslationService
+from services.document_processing_service import DocumentProcessingService
 
 
 class TranslateAgent(BaseProjectAgent):
@@ -21,7 +21,6 @@ class TranslateAgent(BaseProjectAgent):
 
         filename = args[0]
         language = args[1]
-
         source = Path(project.root) / filename
 
         if not source.exists():
@@ -29,13 +28,10 @@ class TranslateAgent(BaseProjectAgent):
 
         try:
             processor = TranslationProcessor(self.context.llm, language)
-            service = DocumentTranslationService(processor)
+            service = DocumentProcessingService(processor)
 
-            print(
-                "\nProcessing document... This may take a moment depending on the size.\n"
-            )
-
-            destination = service.translate(source, language)
+            print("\nTranslating document... Please wait.\n")
+            destination = service.process(source, language)
 
             return f"Translation completed successfully.\nCreated: {destination.name}"
         except ValueError as ex:

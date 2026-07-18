@@ -16,6 +16,7 @@ from factories.llm_factory import LLMFactory
 from services.llm_service import LLMService
 from services.workspace_service import WorkspaceService
 from services.knowledge_service import KnowledgeService
+from services.prompt_service import PromptService
 
 from agents.chat_agent import ChatAgent
 from agents.open_agent import OpenAgent
@@ -25,6 +26,7 @@ from agents.find_agent import FindAgent
 from agents.translate_agent import TranslateAgent
 from agents.summarize_agent import SummarizeAgent
 from agents.rewrite_agent import RewriteAgent
+from agents.role_agent import RoleAgent
 
 
 class Kernel:
@@ -45,9 +47,10 @@ class Kernel:
 
         logger.info(f"Provider connected: {self.provider.__class__.__name__}")
 
-        # Load Knowledge Base
         knowledge_service = KnowledgeService(Path.cwd())
         knowledge_service.load()
+
+        prompt_service = PromptService(knowledge_service)
 
         llm = LLMService(self.provider)
         workspace = Workspace()
@@ -58,6 +61,7 @@ class Kernel:
             llm=llm,
             workspace_service=workspace_service,
             knowledge_service=knowledge_service,
+            prompt_service=prompt_service,
         )
 
         self.agent_manager["chat"] = ChatAgent(context)
@@ -68,6 +72,7 @@ class Kernel:
         self.agent_manager["translate"] = TranslateAgent(context)
         self.agent_manager["summarize"] = SummarizeAgent(context)
         self.agent_manager["rewrite"] = RewriteAgent(context)
+        self.agent_manager["role"] = RoleAgent(context)
 
         print(f"Knowledge loaded: {knowledge_service.get_stats()}")
         print("Provider connected successfully.\n")

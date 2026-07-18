@@ -1,12 +1,11 @@
-Sprint 02 - Summary
+## Sprint 02 - Summary
 Goal: Enable SEOS to understand the file system by managing a Workspace and allowing project exploration.
 
-Milestone: M1 - Foundation
+## Milestone: M1 - Foundation
 
 Status: ✅ Completed (v0.2.0)
 
-Key Deliverables:
-
+## Key Deliverables:
 Project and Workspace domain models.
 WorkspaceService for project management.
 BaseProjectAgent to enforce project context on agents.

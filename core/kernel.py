@@ -30,6 +30,7 @@ from agents.role_agent import RoleAgent
 from agents.git_agent import GitAgent
 from agents.symbols_agent import SymbolsAgent
 from agents.test_agent import TestAgent
+from agents.create_agent import CreateAgent
 
 
 class Kernel:
@@ -79,13 +80,14 @@ class Kernel:
         self.agent_manager["git"] = GitAgent(context)
         self.agent_manager["symbols"] = SymbolsAgent(context)
         self.agent_manager["test"] = TestAgent(context)
+        self.agent_manager["create"] = CreateAgent(context)
 
         print(f"Knowledge loaded: {knowledge_service.get_stats()}")
         print("Provider connected successfully.\n")
 
     def run(self):
         self.initialize()
-        print("Type '/exit' to quit.\n")
+        print("Type '/help' for available commands or '/exit' to quit.\n")
 
         while True:
             prompt = input("> ")
@@ -93,6 +95,17 @@ class Kernel:
 
             if command in ["exit", "quit", "bye"]:
                 break
+
+            if command == "help":
+                print("\nAvailable commands:")
+                # Imprimir comandos de agentes ordenados alfabéticamente
+                for cmd in sorted(self.agent_manager.keys()):
+                    print(f"  /{cmd}")
+                # Imprimir comandos del sistema
+                print("  /help")
+                print("  /exit (or /quit, /bye)")
+                print()
+                continue
 
             try:
                 agent = self.agent_manager.get(command)

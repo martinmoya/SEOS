@@ -21,6 +21,7 @@ from agents.open_agent import OpenAgent
 from agents.info_agent import InfoAgent
 from agents.tree_agent import TreeAgent
 from agents.find_agent import FindAgent
+from agents.translate_agent import TranslateAgent
 
 
 class Kernel:
@@ -44,8 +45,6 @@ class Kernel:
         llm = LLMService(self.provider)
         workspace = Workspace()
         workspace_service = WorkspaceService(workspace)
-
-        # Open current directory by default
         workspace_service.open(str(Path.cwd()))
 
         context = AgentContext(llm=llm, workspace_service=workspace_service)
@@ -55,6 +54,7 @@ class Kernel:
         self.agent_manager["info"] = InfoAgent(context)
         self.agent_manager["tree"] = TreeAgent(context)
         self.agent_manager["find"] = FindAgent(context)
+        self.agent_manager["translate"] = TranslateAgent(context)
 
         print("Provider connected successfully.\n")
 

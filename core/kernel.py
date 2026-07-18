@@ -15,6 +15,7 @@ from core.exceptions import SeosError
 from factories.llm_factory import LLMFactory
 from services.llm_service import LLMService
 from services.workspace_service import WorkspaceService
+from services.knowledge_service import KnowledgeService
 
 from agents.chat_agent import ChatAgent
 from agents.open_agent import OpenAgent
@@ -44,12 +45,20 @@ class Kernel:
 
         logger.info(f"Provider connected: {self.provider.__class__.__name__}")
 
+        # Load Knowledge Base
+        knowledge_service = KnowledgeService(Path.cwd())
+        knowledge_service.load()
+
         llm = LLMService(self.provider)
         workspace = Workspace()
         workspace_service = WorkspaceService(workspace)
         workspace_service.open(str(Path.cwd()))
 
-        context = AgentContext(llm=llm, workspace_service=workspace_service)
+        context = AgentContext(
+            llm=llm,
+            workspace_service=workspace_service,
+            knowledge_service=knowledge_service,
+        )
 
         self.agent_manager["chat"] = ChatAgent(context)
         self.agent_manager["open"] = OpenAgent(context)
@@ -60,6 +69,7 @@ class Kernel:
         self.agent_manager["summarize"] = SummarizeAgent(context)
         self.agent_manager["rewrite"] = RewriteAgent(context)
 
+        print(f"Knowledge loaded: {knowledge_service.get_stats()}")
         print("Provider connected successfully.\n")
 
     def run(self):

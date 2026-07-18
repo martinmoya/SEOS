@@ -1,5 +1,5 @@
 ## SEOS
-## Software Engineering Operating System
+Software Engineering Operating System
 An AI-Orchestrated Platform for Software Engineering.
 
 ## What is SEOS?
@@ -7,7 +7,7 @@ SEOS is a local-first, AI-orchestrated platform designed to support software eng
 
 It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and will eventually coordinate specialized AI agents to act as a virtual software team.
 
-## Current Features (v0.6.0)
+## Current Features (v0.7.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -19,8 +19,10 @@ Knowledge Core:
 Hierarchical knowledge base (Roles, Rules, Capabilities).
 Loads 19 roles and 110 capabilities at startup.
 Prompt Engine:
-Dynamic prompt composition.
+Dynamic prompt composition using System Messages.
 Switch SEOS personality on the fly using /role <name>.
+Developer Skills:
+Git Integration: Run /git status, /git add, /git commit directly from SEOS.
 
 ## Architecture
 SEOS is built on Clean Architecture principles:
@@ -28,13 +30,15 @@ SEOS is built on Clean Architecture principles:
 core/: Kernel, Workspace, Context, Settings.
 agents/: CLI Command handlers (orchestration only).
 services/: Business logic (Document Processing, LLM, Workspace, Knowledge, Prompt).
+skills/: Reusable system operations (e.g., GitSkill).
 providers/: LLM implementations (LM Studio, Ollama).
 processors/: Text transformations (Translation, Summary, Rewrite).
 knowledge/: Markdown files defining SEOS behavior and expertise.
 
 ## Installation & Setup
 Clone the repository.
-Create a virtual environment:
+
+## Create a virtual environment:
 python -m venv .venv.venv\Scripts\activate
 
 ## Install dependencies:
@@ -64,6 +68,7 @@ python main.py
 /rewrite <file>: Improve text clarity and grammar.
 /role <name>: Activate a specific role (e.g., /role software_architect).
 /role clear: Remove the active role.
+/git <command> [args]: Execute Git commands (status, add, commit, diff, log).
 /exit, /quit, /bye: Shut down SEOS.
 
 ## License

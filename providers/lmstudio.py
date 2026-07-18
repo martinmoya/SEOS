@@ -21,10 +21,15 @@ class LMStudioProvider(BaseLLMProvider):
         except Exception:
             return False
 
-    def generate(self, prompt: str) -> str:
+    def generate(self, prompt: str, system: str = None) -> str:
+        messages = []
+        if system:
+            messages.append({"role": "system", "content": system})
+        messages.append({"role": "user", "content": prompt})
+
         response = self.client.chat.completions.create(
             model=Settings.MODEL,
-            messages=[{"role": "user", "content": prompt}],
+            messages=messages,
             temperature=Settings.TEMPERATURE,
             max_tokens=Settings.MAX_TOKENS,
         )

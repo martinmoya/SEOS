@@ -10,5 +10,5 @@ class LLMService:
     def __init__(self, provider: BaseLLMProvider):
         self.provider = provider
 
-    def generate(self, prompt: str) -> str:
-        return self.provider.generate(prompt)
+    def generate(self, prompt: str, system: str = None) -> str:
+        return self.provider.generate(prompt, system)

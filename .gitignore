@@ -1,0 +1,54 @@
+# -------------------------------------------------------
+# Python
+# -------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Distribution
+build/
+dist/
+*.egg-info/
+
+# Unit Tests
+.pytest_cache/
+.coverage
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+logs/*.log
+
+# Local configuration
+*.local
+.env
+.env.*
+
+# LM Studio
+models/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Bytecode
+*.pyc
+
+# Notebook
+.ipynb_checkpoints/
+
+#WORD Documents
+*.docx

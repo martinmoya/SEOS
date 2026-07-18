@@ -3,16 +3,24 @@ SEOS Kernel.
 Orchestrates application lifecycle.
 """
 
+from pathlib import Path
+
 from core.banner import show_banner
 from core.logger import logger
 from core.command_parser import CommandParser
 from core.agent_context import AgentContext
+from core.workspace import Workspace
 from core.exceptions import SeosError
 
 from factories.llm_factory import LLMFactory
 from services.llm_service import LLMService
+from services.workspace_service import WorkspaceService
 
 from agents.chat_agent import ChatAgent
+from agents.open_agent import OpenAgent
+from agents.info_agent import InfoAgent
+from agents.tree_agent import TreeAgent
+from agents.find_agent import FindAgent
 
 
 class Kernel:
@@ -34,10 +42,19 @@ class Kernel:
         logger.info(f"Provider connected: {self.provider.__class__.__name__}")
 
         llm = LLMService(self.provider)
-        context = AgentContext(llm=llm)
+        workspace = Workspace()
+        workspace_service = WorkspaceService(workspace)
+
+        # Open current directory by default
+        workspace_service.open(str(Path.cwd()))
+
+        context = AgentContext(llm=llm, workspace_service=workspace_service)
 
         self.agent_manager["chat"] = ChatAgent(context)
-        self.agent_manager["exit"] = None  # Special case for breaking loop
+        self.agent_manager["open"] = OpenAgent(context)
+        self.agent_manager["info"] = InfoAgent(context)
+        self.agent_manager["tree"] = TreeAgent(context)
+        self.agent_manager["find"] = FindAgent(context)
 
         print("Provider connected successfully.\n")
 
@@ -49,7 +66,7 @@ class Kernel:
             prompt = input("> ")
             command, argument = self.parser.parse(prompt)
 
-            if command == "exit" or command == "quit" or command == "bye":
+            if command in ["exit", "quit", "bye"]:
                 break
 
             try:

@@ -7,7 +7,7 @@ SEOS is a local-first, AI-orchestrated platform designed to support software eng
 
 It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and will eventually coordinate specialized AI agents to act as a virtual software team.
 
-Current Features (v0.13.0)
+Current Features (v0.14.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -39,6 +39,9 @@ Rich Terminal UI: Colored outputs and panels using rich.
 REST API Core:
 Run SEOS as a headless service using /serve.
 Endpoints: / (health), /chat (POST), /review (POST).
+VS Code Extension (MVP):
+TypeScript extension that consumes the SEOS REST API.
+Right-click context menu command: "SEOS: Explain Code".
 Architecture
 SEOS is built on Clean Architecture principles:
 
@@ -50,18 +53,23 @@ analyzers/: Code parsing logic (AST).
 providers/: LLM implementations (LM Studio, Ollama).
 processors/: Text transformations (Translation, Summary, Rewrite).
 api/: FastAPI REST API implementation.
+vscode-extension/: TypeScript source for the VS Code integration.
 knowledge/: Markdown files defining SEOS behavior and expertise.
 Installation & Setup
 Clone the repository.
 Create a virtual environment:
 python -m venv .venv.venv\Scripts\activate
-Install dependencies:
+Install Python dependencies:
 bash
 
 pip install -r requirements.txt
 Configure your environment:
 Copy .env.example to .env
 Set your LLM_PROVIDER, LMSTUDIO_URL, and MODEL.
+Setup VS Code Extension (Optional):
+cd vscode-extension
+npm install
+npm run compile
 Usage
 Run the application:
 
@@ -92,5 +100,6 @@ Available CLI commands:
 /create_docker <entrypoint>: Generate a production-ready Dockerfile.
 /serve: Start the SEOS REST API server on port 8080.
 /exit, /quit, /bye: Shut down SEOS.
+
 License
 This project is licensed under the MIT License - see the LICENSE file for details.

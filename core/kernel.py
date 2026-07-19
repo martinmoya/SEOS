@@ -20,6 +20,7 @@ from services.workspace_service import WorkspaceService
 from services.knowledge_service import KnowledgeService
 from services.prompt_service import PromptService
 from services.agent_service import AgentService
+from services.conversation_service import ConversationService
 
 from managers.agent_manager import AgentManager
 
@@ -69,14 +70,13 @@ class Kernel:
         knowledge_service.load()
 
         prompt_service = PromptService(knowledge_service)
+        conversation_service = ConversationService()
 
         llm = LLMService(self.provider)
         workspace = Workspace()
         workspace_service = WorkspaceService(workspace)
         workspace_service.open(str(Path.cwd()))
 
-        # AgentService necesita AgentManager, pero AgentContext necesita AgentService.
-        # AgentManager ya existe, así que lo pasamos.
         agent_service = AgentService(self.agent_manager)
 
         context = AgentContext(
@@ -85,6 +85,7 @@ class Kernel:
             knowledge_service=knowledge_service,
             prompt_service=prompt_service,
             agent_service=agent_service,
+            conversation_service=conversation_service,
         )
 
         self.agent_manager.register("chat", ChatAgent(context))

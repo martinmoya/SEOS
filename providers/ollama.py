@@ -21,10 +21,14 @@ class OllamaProvider(BaseLLMProvider):
         except Exception:
             return False
 
-    def generate(self, prompt: str, system: str = None) -> str:
+    def generate(self, prompt: str, system: str = None, history: list = None) -> str:
         messages = []
         if system:
             messages.append({"role": "system", "content": system})
+
+        if history:
+            messages.extend(history)
+
         messages.append({"role": "user", "content": prompt})
 
         response = self.client.chat(model=Settings.MODEL, messages=messages)

@@ -7,7 +7,7 @@ SEOS is a local-first, AI-orchestrated platform designed to support software eng
 
 It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and coordinates specialized AI agents to act as a virtual software team.
 
-Current Features (v0.17.0)
+Current Features (v0.18.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -43,6 +43,8 @@ GitHub API: Create Issues and PRs directly via /github.
 Multi-Agent Collaboration:
 Intent Recognition: The ChatAgent can understand user requests and automatically delegate tasks to specialized agents (e.g., asking to create code triggers /create).
 Conversational Memory: SEOS remembers the context of the current session to provide continuous and natural interactions.
+Quality Assurance:
+Unit Testing: Core components (Parser, Analyzer, Languages) are covered by pytest unit tests.
 Architecture
 SEOS is built on Clean Architecture principles:
 
@@ -57,6 +59,7 @@ processors/: Text transformations (Translation, Summary, Rewrite).
 api/: FastAPI REST API implementation.
 vscode-extension/: TypeScript source for the VS Code integration.
 knowledge/: Markdown files defining SEOS behavior and expertise.
+tests/: Pytest unit tests for core components.
 Installation & Setup
 Clone the repository.
 Create a virtual environment:
@@ -104,5 +107,6 @@ Available CLI commands:
 /serve: Start the SEOS REST API server on port 8080.
 /github <issue|pr> <owner/repo> <title> [head:base]: Create an Issue or PR on GitHub.
 /exit, /quit, /bye: Shut down SEOS.
+
 License
 This project is licensed under the MIT License - see the LICENSE file for details.

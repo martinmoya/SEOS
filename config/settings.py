@@ -8,11 +8,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 from core.exceptions import ConfigurationError
 
-# Asegura que siempre busque el .env en la raíz del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_FILE = BASE_DIR / ".env"
 
-# Validar que el archivo de configuración exista antes de continuar
 if not ENV_FILE.exists():
     raise ConfigurationError("Missing .env file. Please copy .env.example to .env")
 
@@ -33,3 +31,10 @@ class Settings:
     MODEL = _get.__func__("MODEL")
     TEMPERATURE = float(_get.__func__("TEMPERATURE"))
     MAX_TOKENS = int(_get.__func__("MAX_TOKENS"))
+
+    # Optional settings (returns None if not present)
+    @staticmethod
+    def get_optional(key: str) -> str | None:
+        return os.getenv(key)
+
+    GITHUB_TOKEN = get_optional.__func__("GITHUB_TOKEN")

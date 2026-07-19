@@ -7,7 +7,7 @@ SEOS is a local-first, AI-orchestrated platform designed to support software eng
 
 It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and will eventually coordinate specialized AI agents to act as a virtual software team.
 
-Current Features (v0.14.0)
+Current Features (v0.15.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -36,19 +36,17 @@ Deployment: Generate Dockerfiles /create_docker <entrypoint>.
 CLI Experience:
 Dynamic /help system: Type /help for a list of commands, or /help <command> for detailed usage.
 Rich Terminal UI: Colored outputs and panels using rich.
-REST API Core:
-Run SEOS as a headless service using /serve.
-Endpoints: / (health), /chat (POST), /review (POST).
-VS Code Extension (MVP):
-TypeScript extension that consumes the SEOS REST API.
-Right-click context menu command: "SEOS: Explain Code".
+Integrations:
+REST API: Run SEOS as a headless service using /serve.
+VS Code Extension (MVP): Explain code from the editor context menu.
+GitHub API: Create Issues and PRs directly via /github.
 Architecture
 SEOS is built on Clean Architecture principles:
 
 core/: Kernel, Workspace, Context, Settings.
 agents/: CLI Command handlers (orchestration only).
 services/: Business logic (Document Processing, LLM, Workspace, Knowledge, Prompt, Code Gen, Refactoring, Review, Deployment).
-skills/: Reusable system operations (Git, Python).
+skills/: Reusable system operations (Git, Python, GitHub).
 analyzers/: Code parsing logic (AST).
 providers/: LLM implementations (LM Studio, Ollama).
 processors/: Text transformations (Translation, Summary, Rewrite).
@@ -66,6 +64,7 @@ pip install -r requirements.txt
 Configure your environment:
 Copy .env.example to .env
 Set your LLM_PROVIDER, LMSTUDIO_URL, and MODEL.
+(Optional) Set GITHUB_TOKEN to enable GitHub integration.
 Setup VS Code Extension (Optional):
 cd vscode-extension
 npm install
@@ -99,6 +98,7 @@ Available CLI commands:
 /review <file>: Review a Python file for bugs and vulnerabilities.
 /create_docker <entrypoint>: Generate a production-ready Dockerfile.
 /serve: Start the SEOS REST API server on port 8080.
+/github <issue|pr> <owner/repo> <title> [head:base]: Create an Issue or PR on GitHub.
 /exit, /quit, /bye: Shut down SEOS.
 
 License

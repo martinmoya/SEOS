@@ -40,6 +40,7 @@ from agents.gentest_agent import GenTestAgent
 from agents.review_agent import ReviewAgent
 from agents.deploy_agent import DeployAgent
 from agents.serve_agent import ServeAgent
+from agents.github_agent import GithubAgent
 
 
 class Kernel:
@@ -98,6 +99,7 @@ class Kernel:
         self.agent_manager["review"] = ReviewAgent(context)
         self.agent_manager["create_docker"] = DeployAgent(context)
         self.agent_manager["serve"] = ServeAgent(context)
+        self.agent_manager["github"] = GithubAgent(context)
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"

@@ -5,6 +5,8 @@ Orchestrates application lifecycle.
 
 from pathlib import Path
 
+from rich.console import Console
+
 from core.banner import show_banner
 from core.logger import logger
 from core.command_parser import CommandParser
@@ -37,6 +39,7 @@ from agents.refactor_agent import RefactorAgent
 from agents.gentest_agent import GenTestAgent
 from agents.review_agent import ReviewAgent
 from agents.deploy_agent import DeployAgent
+from agents.serve_agent import ServeAgent
 
 
 class Kernel:
@@ -44,6 +47,7 @@ class Kernel:
         self.provider = None
         self.parser = CommandParser()
         self.agent_manager = {}
+        self.console = Console()
 
     def initialize(self):
         show_banner()
@@ -93,16 +97,27 @@ class Kernel:
         self.agent_manager["gentest"] = GenTestAgent(context)
         self.agent_manager["review"] = ReviewAgent(context)
         self.agent_manager["create_docker"] = DeployAgent(context)
+        self.agent_manager["serve"] = ServeAgent(context)
 
-        print(f"Knowledge loaded: {knowledge_service.get_stats()}")
-        print("Provider connected successfully.\n")
+        self.console.print(
+            f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"
+        )
+        self.console.print(
+            "[bold green]✓ Provider connected successfully.[/bold green]\n"
+        )
 
     def run(self):
         self.initialize()
-        print("Type '/help' for available commands or '/exit' to quit.\n")
+        self.console.print(
+            "Type [cyan]/help[/cyan] for available commands or [cyan]/exit[/cyan] to quit.\n"
+        )
 
         while True:
-            prompt = input("> ")
+            try:
+                prompt = input("> ")
+            except EOFError:
+                break
+
             command, argument = self.parser.parse(prompt)
 
             if command in ["exit", "quit", "bye"]:
@@ -112,31 +127,34 @@ class Kernel:
                 if argument:
                     agent = self.agent_manager.get(argument)
                     if agent:
-                        print(f"\n/{argument}\n  {agent.description}\n")
+                        self.console.print(
+                            f"\n[cyan]/{argument}[/cyan]\n  {agent.description}\n"
+                        )
                     else:
-                        print(f"\nUnknown command: /{argument}\n")
+                        self.console.print(
+                            f"\n[red]Unknown command:[/red] /{argument}\n"
+                        )
                 else:
-                    print("\nAvailable commands:")
+                    self.console.print("\n[bold]Available commands:[/bold]")
                     for cmd in sorted(self.agent_manager.keys()):
-                        print(f"  /{cmd}")
-                    print("  /help [command]")
-                    print("  /exit (or /quit, /bye)")
-                    print()
+                        self.console.print(f"  [cyan]/{cmd}[/cyan]")
+                    self.console.print("  [cyan]/help[/cyan] [command]")
+                    self.console.print("  [cyan]/exit[/cyan] (or /quit, /bye)\n")
                 continue
 
             try:
                 agent = self.agent_manager.get(command)
                 if agent:
                     response = agent.execute(argument)
-                    print(f"\n{response}\n")
+                    self.console.print(f"\n{response}\n")
                 else:
-                    print(f"\nUnknown command: /{command}\n")
+                    self.console.print(f"\n[red]Unknown command:[/red] /{command}\n")
             except Exception as ex:
                 logger.error(f"Error executing command {command}: {ex}")
-                print(f"\nERROR: {ex}\n")
+                self.console.print(f"\n[bold red]ERROR:[/bold red] {ex}\n")
 
         self.shutdown()
 
     def shutdown(self):
-        print("\nShutting down SEOS...")
+        self.console.print("\n[yellow]Shutting down SEOS...[/yellow]")
         logger.info("SEOS terminated.")

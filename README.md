@@ -7,7 +7,7 @@ SEOS is a local-first, AI-orchestrated platform designed to support software eng
 
 It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and will eventually coordinate specialized AI agents to act as a virtual software team.
 
-Current Features (v0.12.0)
+Current Features (v0.13.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -35,6 +35,10 @@ Quality Gate: Review code for bugs and vulnerabilities /review <file>.
 Deployment: Generate Dockerfiles /create_docker <entrypoint>.
 CLI Experience:
 Dynamic /help system: Type /help for a list of commands, or /help <command> for detailed usage.
+Rich Terminal UI: Colored outputs and panels using rich.
+REST API Core:
+Run SEOS as a headless service using /serve.
+Endpoints: / (health), /chat (POST), /review (POST).
 Architecture
 SEOS is built on Clean Architecture principles:
 
@@ -45,6 +49,7 @@ skills/: Reusable system operations (Git, Python).
 analyzers/: Code parsing logic (AST).
 providers/: LLM implementations (LM Studio, Ollama).
 processors/: Text transformations (Translation, Summary, Rewrite).
+api/: FastAPI REST API implementation.
 knowledge/: Markdown files defining SEOS behavior and expertise.
 Installation & Setup
 Clone the repository.
@@ -63,7 +68,7 @@ Run the application:
 bash
 
 python main.py
-Available commands:
+Available CLI commands:
 
 /help [command]: List all commands or show detailed help for a specific command.
 /chat <message>: Talk to the LLM (uses active role if set).
@@ -85,6 +90,7 @@ Available commands:
 /gentest <file>: Generate pytest unit tests for a Python file.
 /review <file>: Review a Python file for bugs and vulnerabilities.
 /create_docker <entrypoint>: Generate a production-ready Dockerfile.
+/serve: Start the SEOS REST API server on port 8080.
 /exit, /quit, /bye: Shut down SEOS.
 License
 This project is licensed under the MIT License - see the LICENSE file for details.

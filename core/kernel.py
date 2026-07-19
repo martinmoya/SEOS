@@ -45,6 +45,8 @@ from agents.review_agent import ReviewAgent
 from agents.deploy_agent import DeployAgent
 from agents.serve_agent import ServeAgent
 from agents.github_agent import GithubAgent
+from agents.diagram_agent import DiagramAgent
+from agents.example_agent import ExampleAgent
 
 
 class Kernel:
@@ -109,6 +111,8 @@ class Kernel:
         self.agent_manager.register("create_docker", DeployAgent(context))
         self.agent_manager.register("serve", ServeAgent(context))
         self.agent_manager.register("github", GithubAgent(context))
+        self.agent_manager.register("create_diagram", DiagramAgent(context))
+        self.agent_manager.register("create_example", ExampleAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"

@@ -7,6 +7,8 @@ from agents.base_project_agent import BaseProjectAgent
 
 
 class TreeAgent(BaseProjectAgent):
+    description = "Display the project directory tree. Usage: /tree"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

@@ -9,6 +9,8 @@ from services.document_processing_service import DocumentProcessingService
 
 
 class SummarizeAgent(BaseProjectAgent):
+    description = "Generate a summary of a document. Usage: /summarize <file>"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

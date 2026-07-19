@@ -8,6 +8,10 @@ from skills.git_skill import GitSkill
 
 
 class GitAgent(BaseProjectAgent):
+    description = (
+        "Execute Git commands. Usage: /git <status|add|commit|diff|log> [args]"
+    )
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

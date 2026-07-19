@@ -10,6 +10,8 @@ from services.code_generator import CodeGenerator
 
 
 class CreateAgent(BaseProjectAgent):
+    description = "Generate a Python boilerplate file. Usage: /create <type> <Name>"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

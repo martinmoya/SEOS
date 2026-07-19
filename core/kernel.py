@@ -31,6 +31,8 @@ from agents.git_agent import GitAgent
 from agents.symbols_agent import SymbolsAgent
 from agents.test_agent import TestAgent
 from agents.create_agent import CreateAgent
+from agents.api_agent import ApiAgent
+from agents.db_agent import DbAgent
 
 
 class Kernel:
@@ -81,6 +83,8 @@ class Kernel:
         self.agent_manager["symbols"] = SymbolsAgent(context)
         self.agent_manager["test"] = TestAgent(context)
         self.agent_manager["create"] = CreateAgent(context)
+        self.agent_manager["create_api"] = ApiAgent(context)
+        self.agent_manager["create_db"] = DbAgent(context)
 
         print(f"Knowledge loaded: {knowledge_service.get_stats()}")
         print("Provider connected successfully.\n")
@@ -97,14 +101,21 @@ class Kernel:
                 break
 
             if command == "help":
-                print("\nAvailable commands:")
-                # Imprimir comandos de agentes ordenados alfabéticamente
-                for cmd in sorted(self.agent_manager.keys()):
-                    print(f"  /{cmd}")
-                # Imprimir comandos del sistema
-                print("  /help")
-                print("  /exit (or /quit, /bye)")
-                print()
+                if argument:
+                    # /help <comando>
+                    agent = self.agent_manager.get(argument)
+                    if agent:
+                        print(f"\n/{argument}\n  {agent.description}\n")
+                    else:
+                        print(f"\nUnknown command: /{argument}\n")
+                else:
+                    # /help
+                    print("\nAvailable commands:")
+                    for cmd in sorted(self.agent_manager.keys()):
+                        print(f"  /{cmd}")
+                    print("  /help [command]")
+                    print("  /exit (or /quit, /bye)")
+                    print()
                 continue
 
             try:

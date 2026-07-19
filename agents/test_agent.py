@@ -8,6 +8,8 @@ from skills.python_skill import PythonSkill
 
 
 class TestAgent(BaseProjectAgent):
+    description = "Run pytest in the current project. Usage: /test"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

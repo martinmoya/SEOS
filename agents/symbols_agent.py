@@ -8,6 +8,10 @@ from skills.python_skill import PythonSkill
 
 
 class SymbolsAgent(BaseProjectAgent):
+    description = (
+        "Display Python classes, methods, and functions. Usage: /symbols <file>"
+    )
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

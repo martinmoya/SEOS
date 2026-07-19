@@ -7,6 +7,8 @@ from agents.base_project_agent import BaseProjectAgent
 
 
 class FindAgent(BaseProjectAgent):
+    description = "Find files by name. Usage: /find <text>"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

@@ -9,6 +9,8 @@ from services.document_processing_service import DocumentProcessingService
 
 
 class TranslateAgent(BaseProjectAgent):
+    description = "Translate a document. Usage: /translate <file> <lang>"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

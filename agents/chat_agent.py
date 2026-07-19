@@ -6,6 +6,8 @@ from agents.base_agent import BaseAgent
 
 
 class ChatAgent(BaseAgent):
+    description = "Talk to the LLM. Usage: /chat <message> (or just type your message)"
+
     def execute(self, argument: str) -> str:
         if not argument:
             return "Usage: /chat <message>"

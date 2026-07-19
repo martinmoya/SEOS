@@ -7,6 +7,8 @@ from agents.base_agent import BaseAgent
 
 
 class RoleAgent(BaseAgent):
+    description = "Manage active roles. Usage: /role [name|clear]"
+
     def execute(self, argument: str) -> str:
         arg = argument.strip().lower()
 

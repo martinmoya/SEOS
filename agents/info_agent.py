@@ -6,6 +6,8 @@ from agents.base_project_agent import BaseProjectAgent
 
 
 class InfoAgent(BaseProjectAgent):
+    description = "Show current project information. Usage: /info"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

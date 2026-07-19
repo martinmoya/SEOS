@@ -9,6 +9,8 @@ from services.document_processing_service import DocumentProcessingService
 
 
 class RewriteAgent(BaseProjectAgent):
+    description = "Improve text clarity and grammar. Usage: /rewrite <file>"
+
     def execute(self, argument: str) -> str:
         try:
             project = self.require_project()

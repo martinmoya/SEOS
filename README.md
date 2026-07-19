@@ -5,9 +5,9 @@ An AI-Orchestrated Platform for Software Engineering.
 What is SEOS?
 SEOS is a local-first, AI-orchestrated platform designed to support software engineers throughout the entire software development lifecycle.
 
-It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and will eventually coordinate specialized AI agents to act as a virtual software team.
+It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and coordinates specialized AI agents to act as a virtual software team.
 
-Current Features (v0.15.0)
+Current Features (v0.16.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -40,12 +40,15 @@ Integrations:
 REST API: Run SEOS as a headless service using /serve.
 VS Code Extension (MVP): Explain code from the editor context menu.
 GitHub API: Create Issues and PRs directly via /github.
+Multi-Agent Collaboration:
+Intent Recognition: The ChatAgent can understand user requests and automatically delegate tasks to specialized agents (e.g., asking to create code triggers /create).
 Architecture
 SEOS is built on Clean Architecture principles:
 
 core/: Kernel, Workspace, Context, Settings.
 agents/: CLI Command handlers (orchestration only).
-services/: Business logic (Document Processing, LLM, Workspace, Knowledge, Prompt, Code Gen, Refactoring, Review, Deployment).
+managers/: Agent discovery and registration.
+services/: Business logic (Document Processing, LLM, Workspace, Knowledge, Prompt, Code Gen, Refactoring, Review, Deployment, Agent Comms).
 skills/: Reusable system operations (Git, Python, GitHub).
 analyzers/: Code parsing logic (AST).
 providers/: LLM implementations (LM Studio, Ollama).
@@ -78,7 +81,7 @@ python main.py
 Available CLI commands:
 
 /help [command]: List all commands or show detailed help for a specific command.
-/chat <message>: Talk to the LLM (uses active role if set).
+/chat <message>: Talk to the LLM (uses active role if set, can delegate tasks).
 /info: Show current project information.
 /tree: Display the project directory tree.
 /find <text>: Find files by name.

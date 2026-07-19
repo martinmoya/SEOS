@@ -19,6 +19,9 @@ from services.llm_service import LLMService
 from services.workspace_service import WorkspaceService
 from services.knowledge_service import KnowledgeService
 from services.prompt_service import PromptService
+from services.agent_service import AgentService
+
+from managers.agent_manager import AgentManager
 
 from agents.chat_agent import ChatAgent
 from agents.open_agent import OpenAgent
@@ -47,7 +50,7 @@ class Kernel:
     def __init__(self):
         self.provider = None
         self.parser = CommandParser()
-        self.agent_manager = {}
+        self.agent_manager = AgentManager()
         self.console = Console()
 
     def initialize(self):
@@ -72,34 +75,39 @@ class Kernel:
         workspace_service = WorkspaceService(workspace)
         workspace_service.open(str(Path.cwd()))
 
+        # AgentService necesita AgentManager, pero AgentContext necesita AgentService.
+        # AgentManager ya existe, así que lo pasamos.
+        agent_service = AgentService(self.agent_manager)
+
         context = AgentContext(
             llm=llm,
             workspace_service=workspace_service,
             knowledge_service=knowledge_service,
             prompt_service=prompt_service,
+            agent_service=agent_service,
         )
 
-        self.agent_manager["chat"] = ChatAgent(context)
-        self.agent_manager["open"] = OpenAgent(context)
-        self.agent_manager["info"] = InfoAgent(context)
-        self.agent_manager["tree"] = TreeAgent(context)
-        self.agent_manager["find"] = FindAgent(context)
-        self.agent_manager["translate"] = TranslateAgent(context)
-        self.agent_manager["summarize"] = SummarizeAgent(context)
-        self.agent_manager["rewrite"] = RewriteAgent(context)
-        self.agent_manager["role"] = RoleAgent(context)
-        self.agent_manager["git"] = GitAgent(context)
-        self.agent_manager["symbols"] = SymbolsAgent(context)
-        self.agent_manager["test"] = TestAgent(context)
-        self.agent_manager["create"] = CreateAgent(context)
-        self.agent_manager["create_api"] = ApiAgent(context)
-        self.agent_manager["create_db"] = DbAgent(context)
-        self.agent_manager["refactor"] = RefactorAgent(context)
-        self.agent_manager["gentest"] = GenTestAgent(context)
-        self.agent_manager["review"] = ReviewAgent(context)
-        self.agent_manager["create_docker"] = DeployAgent(context)
-        self.agent_manager["serve"] = ServeAgent(context)
-        self.agent_manager["github"] = GithubAgent(context)
+        self.agent_manager.register("chat", ChatAgent(context))
+        self.agent_manager.register("open", OpenAgent(context))
+        self.agent_manager.register("info", InfoAgent(context))
+        self.agent_manager.register("tree", TreeAgent(context))
+        self.agent_manager.register("find", FindAgent(context))
+        self.agent_manager.register("translate", TranslateAgent(context))
+        self.agent_manager.register("summarize", SummarizeAgent(context))
+        self.agent_manager.register("rewrite", RewriteAgent(context))
+        self.agent_manager.register("role", RoleAgent(context))
+        self.agent_manager.register("git", GitAgent(context))
+        self.agent_manager.register("symbols", SymbolsAgent(context))
+        self.agent_manager.register("test", TestAgent(context))
+        self.agent_manager.register("create", CreateAgent(context))
+        self.agent_manager.register("create_api", ApiAgent(context))
+        self.agent_manager.register("create_db", DbAgent(context))
+        self.agent_manager.register("refactor", RefactorAgent(context))
+        self.agent_manager.register("gentest", GenTestAgent(context))
+        self.agent_manager.register("review", ReviewAgent(context))
+        self.agent_manager.register("create_docker", DeployAgent(context))
+        self.agent_manager.register("serve", ServeAgent(context))
+        self.agent_manager.register("github", GithubAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"
@@ -138,7 +146,7 @@ class Kernel:
                         )
                 else:
                     self.console.print("\n[bold]Available commands:[/bold]")
-                    for cmd in sorted(self.agent_manager.keys()):
+                    for cmd in self.agent_manager.list():
                         self.console.print(f"  [cyan]/{cmd}[/cyan]")
                     self.console.print("  [cyan]/help[/cyan] [command]")
                     self.console.print("  [cyan]/exit[/cyan] (or /quit, /bye)\n")

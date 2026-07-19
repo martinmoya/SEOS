@@ -33,6 +33,8 @@ from agents.test_agent import TestAgent
 from agents.create_agent import CreateAgent
 from agents.api_agent import ApiAgent
 from agents.db_agent import DbAgent
+from agents.refactor_agent import RefactorAgent
+from agents.gentest_agent import GenTestAgent
 
 
 class Kernel:
@@ -85,6 +87,8 @@ class Kernel:
         self.agent_manager["create"] = CreateAgent(context)
         self.agent_manager["create_api"] = ApiAgent(context)
         self.agent_manager["create_db"] = DbAgent(context)
+        self.agent_manager["refactor"] = RefactorAgent(context)
+        self.agent_manager["gentest"] = GenTestAgent(context)
 
         print(f"Knowledge loaded: {knowledge_service.get_stats()}")
         print("Provider connected successfully.\n")
@@ -102,14 +106,12 @@ class Kernel:
 
             if command == "help":
                 if argument:
-                    # /help <comando>
                     agent = self.agent_manager.get(argument)
                     if agent:
                         print(f"\n/{argument}\n  {agent.description}\n")
                     else:
                         print(f"\nUnknown command: /{argument}\n")
                 else:
-                    # /help
                     print("\nAvailable commands:")
                     for cmd in sorted(self.agent_manager.keys()):
                         print(f"  /{cmd}")

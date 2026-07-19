@@ -7,7 +7,7 @@ SEOS is a local-first, AI-orchestrated platform designed to support software eng
 
 It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and will eventually coordinate specialized AI agents to act as a virtual software team.
 
-Current Features (v0.10.0)
+Current Features (v0.11.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -29,6 +29,8 @@ Software Factory:
 Code Scaffolding: Generate Python boilerplate files /create class <Name>.
 API Generation: Generate FastAPI endpoints /create_api <description>.
 Database Generation: Generate SQLAlchemy models /create_db <description>.
+Refactoring: Modify existing code safely with AST validation /refactor <file> <instruction>.
+Test Generation: Generate pytest unit tests /gentest <file>.
 CLI Experience:
 Dynamic /help system: Type /help for a list of commands, or /help <command> for detailed usage.
 Architecture
@@ -36,7 +38,7 @@ SEOS is built on Clean Architecture principles:
 
 core/: Kernel, Workspace, Context, Settings.
 agents/: CLI Command handlers (orchestration only).
-services/: Business logic (Document Processing, LLM, Workspace, Knowledge, Prompt, Code Gen).
+services/: Business logic (Document Processing, LLM, Workspace, Knowledge, Prompt, Code Gen, Refactoring).
 skills/: Reusable system operations (Git, Python).
 analyzers/: Code parsing logic (AST).
 providers/: LLM implementations (LM Studio, Ollama).
@@ -77,6 +79,8 @@ Available commands:
 /create <type> <Name>: Generate a Python boilerplate file (e.g., /create class UserDTO).
 /create_api <description>: Generate a FastAPI endpoint file.
 /create_db <description>: Generate a SQLAlchemy model file.
+/refactor <file> <instruction>: Refactor an existing Python file safely.
+/gentest <file>: Generate pytest unit tests for a Python file.
 /exit, /quit, /bye: Shut down SEOS.
 License
 This project is licensed under the MIT License - see the LICENSE file for details.

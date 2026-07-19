@@ -35,6 +35,8 @@ from agents.api_agent import ApiAgent
 from agents.db_agent import DbAgent
 from agents.refactor_agent import RefactorAgent
 from agents.gentest_agent import GenTestAgent
+from agents.review_agent import ReviewAgent
+from agents.deploy_agent import DeployAgent
 
 
 class Kernel:
@@ -89,6 +91,8 @@ class Kernel:
         self.agent_manager["create_db"] = DbAgent(context)
         self.agent_manager["refactor"] = RefactorAgent(context)
         self.agent_manager["gentest"] = GenTestAgent(context)
+        self.agent_manager["review"] = ReviewAgent(context)
+        self.agent_manager["create_docker"] = DeployAgent(context)
 
         print(f"Knowledge loaded: {knowledge_service.get_stats()}")
         print("Provider connected successfully.\n")

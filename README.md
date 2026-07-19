@@ -7,7 +7,7 @@ SEOS is a local-first, AI-orchestrated platform designed to support software eng
 
 It is not just a chatbot. It is not just a coding assistant. SEOS understands your project's structure, analyzes code, translates documents, and coordinates specialized AI agents to act as a virtual software team.
 
-Current Features (v0.18.0)
+Current Features (v0.19.0)
 Local LLM Support: Connects seamlessly with LM Studio and Ollama.
 Workspace Management: Open and explore multiple projects.
 File Navigation: Understands your project tree, finds files, and shows stats.
@@ -45,6 +45,10 @@ Intent Recognition: The ChatAgent can understand user requests and automatically
 Conversational Memory: SEOS remembers the context of the current session to provide continuous and natural interactions.
 Quality Assurance:
 Unit Testing: Core components (Parser, Analyzer, Languages) are covered by pytest unit tests.
+Packaging & Distribution:
+Installable as a Python package via pip install ..
+seos CLI command globally available.
+Docker support for containerized deployment.
 Architecture
 SEOS is built on Clean Architecture principles:
 
@@ -64,10 +68,10 @@ Installation & Setup
 Clone the repository.
 Create a virtual environment:
 python -m venv .venv.venv\Scripts\activate
-Install Python dependencies:
+Install the package (editable mode recommended for development):
 bash
 
-pip install -r requirements.txt
+pip install -e .
 Configure your environment:
 Copy .env.example to .env
 Set your LLM_PROVIDER, LMSTUDIO_URL, and MODEL.
@@ -77,7 +81,12 @@ cd vscode-extension
 npm install
 npm run compile
 Usage
-Run the application:
+Run the application (from anywhere in your terminal):
+
+bash
+
+seos
+Or run it directly:
 
 bash
 

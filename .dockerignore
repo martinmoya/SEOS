@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+logs/
+.env
+.git/
+.vscode/
+.idea/
+pytest.ini
+tests/
+SEOS-docs/
+vscode-extension/node_modules/
+vscode-extension/out/

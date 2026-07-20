@@ -13,6 +13,7 @@ from core.command_parser import CommandParser
 from core.agent_context import AgentContext
 from core.workspace import Workspace
 from core.exceptions import SeosError
+from core.plugin_manager import PluginManager
 
 from factories.llm_factory import LLMFactory
 from services.llm_service import LLMService
@@ -117,6 +118,7 @@ class Kernel:
             audit_service=audit_service,
         )
 
+        # 1. Registrar agentes nativos
         self.agent_manager.register("chat", ChatAgent(context))
         self.agent_manager.register("open", OpenAgent(context))
         self.agent_manager.register("info", InfoAgent(context))
@@ -148,6 +150,14 @@ class Kernel:
         self.agent_manager.register("metrics", MetricsAgent(context))
         self.agent_manager.register("audit", AuditAgent(context))
         self.agent_manager.register("adr", AdrAgent(context))
+
+        # 2. Cargar Plugins de terceros
+        plugin_manager = PluginManager()
+        loaded = plugin_manager.load_plugins(self.agent_manager, context)
+        if loaded:
+            self.console.print(
+                f"[bold green]✓ Loaded {len(loaded)} plugins: {', '.join(loaded)}[/bold green]"
+            )
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"

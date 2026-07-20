@@ -43,7 +43,8 @@ class SeosApp(App):
             yield Tree("SEOS Project", id="tree-view")
             yield RichLog(id="chat-view", markup=True)
         yield Input(
-            placeholder="Enter command (e.g., /help or /chat Hello)", id="cmd-input"
+            placeholder="Type a command (e.g., /help or /sprint 'Create login module')",
+            id="cmd-input",
         )
         yield Footer()
 
@@ -52,10 +53,18 @@ class SeosApp(App):
         self.sub_title = "Software Engineering Operating System"
         self.build_tree()
         chat = self.query_one("#chat-view")
-        chat.write("[bold green]✓ Provider connected successfully.[/bold green]")
+
+        # MENSAJE DE BIENVENIDA MÁGICO
+        chat.write("[bold cyan]🚀 Welcome to SEOS v2.0.0[/bold cyan]")
+        chat.write(f"[dim]Current Workspace: {os.getcwd()}[/dim]")
+        chat.write("\n[bold]How can I help you today?[/bold]")
+        chat.write("  • Ask a question: [cyan]/chat How does this project work?[/cyan]")
         chat.write(
-            "Type [cyan]/help[/cyan] for available commands or [cyan]/exit[/cyan] to quit.\n"
+            "  • Start a development sprint: [cyan]/sprint Create a user profile module[/cyan]"
         )
+        chat.write("  • Review a file: [cyan]/review main.py[/cyan]")
+        chat.write("  • Type [cyan]/help[/cyan] to see all commands.\n")
+
         self.query_one("#cmd-input").focus()
 
     def build_tree(self):
@@ -63,7 +72,6 @@ class SeosApp(App):
         tree.root.expand()
         root_path = os.getcwd()
 
-        # Construir árbol de directorios (1 nivel de profundidad para no congelar la UI)
         for item in sorted(os.listdir(root_path)):
             if item.startswith(".") or item in [
                 "node_modules",
@@ -75,7 +83,6 @@ class SeosApp(App):
                 continue
             full_path = os.path.join(root_path, item)
             if os.path.isdir(full_path):
-                # En Textual, se usa .add() para crear una rama
                 branch = tree.root.add(item, allow_expand=True)
                 try:
                     for sub_item in sorted(os.listdir(full_path)):

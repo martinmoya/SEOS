@@ -19,7 +19,6 @@ class ChatAgent(BaseAgent):
         system_prompt, user_prompt = self.context.prompt_service.build_prompt(argument)
 
         # --- RAG Integration ---
-        # Buscar contexto en la base de datos vectorial
         vector_context = self.context.vector_service.query(user_prompt)
         if vector_context:
             context_instruction = (
@@ -42,7 +41,8 @@ class ChatAgent(BaseAgent):
             "- /review <file>: ONLY when the user explicitly asks to REVIEW or AUDIT a specific code file.\n"
             "- /refactor <file> <instruction>: ONLY when the user explicitly asks to REFACTOR a specific file.\n"
             "- /translate <file> <lang>: ONLY when the user explicitly asks to TRANSLATE a document.\n"
-            "IMPORTANT: If the user is greeting you, asking general questions, or discussing concepts, DO NOT DELEGATE. Respond directly to the user.\n"
+            "- /sprint <requirement>: ONLY when the user asks to BUILD, IMPLEMENT, or DEVELOP a complete feature or module.\n"
+            "IMPORTANT: If the user is greeting you, asking general questions, or discussing concepts, DO NOT DELEGATE. Respond directly.\n"
             "If you delegate, do not add any other text or explanations. Example: User says 'create a class UserDTO'. You MUST respond EXACTLY: DELEGATE: /create class UserDTO"
         )
 

@@ -1,6 +1,6 @@
 """
 Role Agent.
-Manages active roles for the Prompt Engine.
+Manages active roles for the Prompt Engine and guides the user.
 """
 
 from agents.base_agent import BaseAgent
@@ -20,4 +20,12 @@ class RoleAgent(BaseAgent):
         if arg == "clear":
             return self.context.prompt_service.clear_role()
 
-        return self.context.prompt_service.set_role(arg)
+        result = self.context.prompt_service.set_role(arg)
+
+        # GUIA DE USO PARA EL USUARIO
+        if "successfully set" in result:
+            result += "\n\n💡 [Next Step] The role is now active. Try these:"
+            result += "\n  • /chat Explain the best architecture for this project"
+            result += "\n  • /sprint Create a caching module for the database"
+
+        return result

@@ -7,6 +7,9 @@ import pytesseract
 from PIL import Image
 from pathlib import Path
 
+# Aseguramos que Python encuentre el ejecutable de Tesseract en Windows
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 
 class OcrSkill:
     def extract_text(self, image_path: str) -> str:

@@ -18,6 +18,4 @@ Reduce the time required to understand, develop, and maintain software systems t
 - **Local-first.** SEOS must be fully functional without cloud dependencies.
 
 ## Long-Term Goal
-Enable SEOS to understand any software system regardless of language, age, or existing documentation. 
-
-Eventually, SEOS will evolve into a Multi-Agent System where a virtual Project Manager coordinates Backend, Frontend, QA, and DevOps agents to execute Sprints autonomously, under human supervision.
+Enable SEOS to understand any software system regardless of language, age, or existing documentation. Eventually, SEOS will evolve into a Multi-Agent System where a virtual Project Manager coordinates Backend, Frontend, QA, and DevOps agents to execute Sprints autonomously, under human supervision.

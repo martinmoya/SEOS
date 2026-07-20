@@ -19,7 +19,10 @@ class SprintAgent(BaseProjectAgent):
             return str(ex)
 
         if not argument.strip():
-            return "Usage: /sprint <high-level requirement>"
+            return (
+                "Usage: /sprint <high-level requirement>\n"
+                "Example: /sprint Create a user login module with JWT authentication"
+            )
 
         engine = WorkflowEngine(self.context.llm, self.context.agent_service)
         return engine.execute_sprint(argument)

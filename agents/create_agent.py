@@ -36,7 +36,6 @@ class CreateAgent(BaseProjectAgent):
         ).lower()
         filename = name_clean + ".py"
 
-        # Crear directorio sandbox si no existe
         target_dir = Path(project.root) / "projects"
         target_dir.mkdir(parents=True, exist_ok=True)
 
@@ -44,6 +43,11 @@ class CreateAgent(BaseProjectAgent):
 
         try:
             filepath.write_text(code, encoding="utf-8")
+
+            # Hooks de Auditoría y Métricas
+            self.context.audit_service.log_action("CREATE", filepath)
+            self.context.metrics_service.add_file_created()
+
             return f"Successfully created: {filename}\nPath: {filepath}"
         except Exception as ex:
             return f"Error writing file: {ex}"

@@ -15,5 +15,8 @@ class BaseLLMProvider(ABC):
         pass
 
     @abstractmethod
-    def generate(self, prompt: str, system: str = None, history: list = None) -> str:
+    def generate(
+        self, prompt: str, system: str = None, history: list = None
+    ) -> tuple[str, int]:
+        """Returns a tuple of (response_text, total_tokens_used)."""
         pass

@@ -21,14 +21,14 @@ class LMStudioProvider(BaseLLMProvider):
         except Exception:
             return False
 
-    def generate(self, prompt: str, system: str = None, history: list = None) -> str:
+    def generate(
+        self, prompt: str, system: str = None, history: list = None
+    ) -> tuple[str, int]:
         messages = []
         if system:
             messages.append({"role": "system", "content": system})
-
         if history:
             messages.extend(history)
-
         messages.append({"role": "user", "content": prompt})
 
         response = self.client.chat.completions.create(
@@ -37,4 +37,8 @@ class LMStudioProvider(BaseLLMProvider):
             temperature=Settings.TEMPERATURE,
             max_tokens=Settings.MAX_TOKENS,
         )
-        return response.choices[0].message.content
+
+        text = response.choices[0].message.content
+        # LM Studio usa la API de OpenAI, así que trae el objeto 'usage'
+        tokens = response.usage.total_tokens if response.usage else 0
+        return text, tokens

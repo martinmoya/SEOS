@@ -5,13 +5,12 @@ Anthropic Claude Provider.
 import anthropic
 from config.settings import Settings
 from providers.base_provider import BaseLLMProvider
-from core.exceptions import ConfigurationError
 
 
 class ClaudeProvider(BaseLLMProvider):
     def __init__(self):
         if not Settings.CLAUDE_API_KEY:
-            raise ConfigurationError("CLAUDE_API_KEY is not configured in .env file.")
+            raise ValueError("CLAUDE_API_KEY is not configured in .env file.")
         self.client = anthropic.Anthropic(api_key=Settings.CLAUDE_API_KEY)
 
     def connect(self):
@@ -24,7 +23,9 @@ class ClaudeProvider(BaseLLMProvider):
         except Exception:
             return False
 
-    def generate(self, prompt: str, system: str = None, history: list = None) -> str:
+    def generate(
+        self, prompt: str, system: str = None, history: list = None
+    ) -> tuple[str, int]:
         messages = []
         if history:
             messages.extend(history)
@@ -37,4 +38,8 @@ class ClaudeProvider(BaseLLMProvider):
             max_tokens=Settings.MAX_TOKENS,
             temperature=Settings.TEMPERATURE,
         )
-        return response.content[0].text
+
+        text = response.content[0].text
+        # Claude suma input + output tokens
+        tokens = response.usage.input_tokens + response.usage.output_tokens
+        return text, tokens

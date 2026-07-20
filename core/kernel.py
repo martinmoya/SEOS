@@ -22,6 +22,8 @@ from services.prompt_service import PromptService
 from services.agent_service import AgentService
 from services.conversation_service import ConversationService
 from services.vector_service import VectorService
+from services.metrics_service import MetricsService
+from services.audit_service import AuditService
 
 from managers.agent_manager import AgentManager
 
@@ -53,6 +55,8 @@ from agents.migrate_agent import MigrateAgent
 from agents.sprint_agent import SprintAgent
 from agents.ocr_agent import OcrAgent
 from agents.mcp_agent import McpAgent
+from agents.metrics_agent import MetricsAgent
+from agents.audit_agent import AuditAgent
 
 from ui.tui_app import SeosApp
 
@@ -81,6 +85,8 @@ class Kernel:
 
         prompt_service = PromptService(knowledge_service)
         conversation_service = ConversationService()
+        metrics_service = MetricsService()
+        audit_service = AuditService()
 
         self.console.print(
             "[bold blue]Indexing project for RAG (Vector DB)...[/bold blue]"
@@ -88,7 +94,11 @@ class Kernel:
         vector_service = VectorService(Path.cwd())
         vector_service.index_project()
 
-        llm = LLMService(self.provider)
+        # Inyectamos métricas y auditoría en el LLMService
+        llm = LLMService(
+            self.provider, metrics_service=metrics_service, audit_service=audit_service
+        )
+
         workspace = Workspace()
         workspace_service = WorkspaceService(workspace)
         workspace_service.open(str(Path.cwd()))
@@ -103,6 +113,8 @@ class Kernel:
             agent_service=agent_service,
             conversation_service=conversation_service,
             vector_service=vector_service,
+            metrics_service=metrics_service,
+            audit_service=audit_service,
         )
 
         self.agent_manager.register("chat", ChatAgent(context))
@@ -133,6 +145,8 @@ class Kernel:
         self.agent_manager.register("sprint", SprintAgent(context))
         self.agent_manager.register("ocr", OcrAgent(context))
         self.agent_manager.register("mcp", McpAgent(context))
+        self.agent_manager.register("metrics", MetricsAgent(context))
+        self.agent_manager.register("audit", AuditAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"

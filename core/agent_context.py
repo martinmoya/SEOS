@@ -10,6 +10,8 @@ from services.prompt_service import PromptService
 from services.agent_service import AgentService
 from services.conversation_service import ConversationService
 from services.vector_service import VectorService
+from services.metrics_service import MetricsService
+from services.audit_service import AuditService
 
 
 class AgentContext:
@@ -22,6 +24,8 @@ class AgentContext:
         agent_service: AgentService,
         conversation_service: ConversationService,
         vector_service: VectorService,
+        metrics_service: MetricsService,
+        audit_service: AuditService,
     ):
         self.llm = llm
         self.workspace_service = workspace_service
@@ -30,6 +34,8 @@ class AgentContext:
         self.agent_service = agent_service
         self.conversation_service = conversation_service
         self.vector_service = vector_service
+        self.metrics_service = metrics_service
+        self.audit_service = audit_service
 
     @property
     def project(self):

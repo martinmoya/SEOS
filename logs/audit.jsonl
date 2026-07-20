@@ -1,0 +1,6 @@
+{"timestamp": "2026-07-20T12:41:21.829101", "action": "CREATE", "file": "C:\\Users\\USER\\Desarrollo\\SEOS\\projects\\test_audit.py"}
+{"timestamp": "2026-07-20T12:48:03.572617", "action": "CREATE", "file": "C:\\Users\\USER\\Desarrollo\\SEOS\\projects\\company.py"}
+{"timestamp": "2026-07-20T12:58:49.819452", "action": "LLM_CALL", "file": "N/A", "tokens": 853}
+{"timestamp": "2026-07-20T13:00:41.374611", "action": "LLM_CALL", "file": "N/A", "tokens": 209}
+{"timestamp": "2026-07-20T13:00:41.376388", "action": "CREATE", "file": "C:\\Users\\USER\\Desarrollo\\SEOS\\projects\\test_document.py"}
+{"timestamp": "2026-07-20T13:02:09.234955", "action": "LLM_CALL", "file": "N/A", "tokens": 1054}

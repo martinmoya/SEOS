@@ -31,13 +31,16 @@ class CreateAgent(BaseProjectAgent):
 
         code = generator.generate(element_type, name)
 
-        # Conversión robusta a snake_case usando Regex
-        # Ej: UserDTO -> user_dto, XMLHttpRequest -> xml_http_request
         name_clean = re.sub(
             r"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_", name
         ).lower()
         filename = name_clean + ".py"
-        filepath = Path(project.root) / filename
+
+        # Crear directorio sandbox si no existe
+        target_dir = Path(project.root) / "projects"
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        filepath = target_dir / filename
 
         try:
             filepath.write_text(code, encoding="utf-8")

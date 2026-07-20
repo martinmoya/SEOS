@@ -28,7 +28,11 @@ class DbAgent(BaseProjectAgent):
 
         words = argument.lower().split()[:3]
         filename = "db_" + "_".join(re.sub(r"[^a-z0-9]", "", w) for w in words) + ".py"
-        filepath = Path(project.root) / filename
+
+        target_dir = Path(project.root) / "projects"
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        filepath = target_dir / filename
 
         try:
             filepath.write_text(code, encoding="utf-8")

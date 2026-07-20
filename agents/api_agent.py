@@ -26,10 +26,13 @@ class ApiAgent(BaseProjectAgent):
         print("\nGenerating API endpoint... Please wait.\n")
         code = generator.generate(argument)
 
-        # Nombre de archivo basado en las primeras palabras
         words = argument.lower().split()[:3]
         filename = "api_" + "_".join(re.sub(r"[^a-z0-9]", "", w) for w in words) + ".py"
-        filepath = Path(project.root) / filename
+
+        target_dir = Path(project.root) / "projects"
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        filepath = target_dir / filename
 
         try:
             filepath.write_text(code, encoding="utf-8")

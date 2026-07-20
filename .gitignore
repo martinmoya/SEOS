@@ -54,3 +54,6 @@ models/
 
 # SEOS Vector DB
 .seos_vector_db/
+
+# SEOS Generated Projects Sandbox
+projects/

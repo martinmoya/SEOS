@@ -49,6 +49,7 @@ from agents.github_agent import GithubAgent
 from agents.diagram_agent import DiagramAgent
 from agents.example_agent import ExampleAgent
 from agents.migrate_agent import MigrateAgent
+from agents.sprint_agent import SprintAgent
 
 
 class Kernel:
@@ -76,7 +77,6 @@ class Kernel:
         prompt_service = PromptService(knowledge_service)
         conversation_service = ConversationService()
 
-        # Inicializar Base de Datos Vectorial e indexar el proyecto
         self.console.print(
             "[bold blue]Indexing project for RAG (Vector DB)...[/bold blue]"
         )
@@ -124,6 +124,7 @@ class Kernel:
         self.agent_manager.register("create_diagram", DiagramAgent(context))
         self.agent_manager.register("create_example", ExampleAgent(context))
         self.agent_manager.register("migrate", MigrateAgent(context))
+        self.agent_manager.register("sprint", SprintAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"

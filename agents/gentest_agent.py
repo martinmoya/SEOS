@@ -21,8 +21,15 @@ class GenTestAgent(BaseProjectAgent):
         if not filename:
             return "Usage: /gentest <file>"
 
-        filepath = Path(project.root) / filename
-        if not filepath.exists() or filepath.suffix != ".py":
+        # Buscamos primero en el sandbox de proyectos, luego en la raíz
+        sandbox_path = Path(project.root) / "projects" / filename
+        root_path = Path(project.root) / filename
+
+        if sandbox_path.exists() and sandbox_path.suffix == ".py":
+            filepath = sandbox_path
+        elif root_path.exists() and root_path.suffix == ".py":
+            filepath = root_path
+        else:
             return f"File not found or not a Python file: {filename}"
 
         print("\nGenerating tests... Please wait.\n")

@@ -30,7 +30,7 @@ from agents.open_agent import OpenAgent
 from agents.info_agent import InfoAgent
 from agents.tree_agent import TreeAgent
 from agents.find_agent import FindAgent
-from agents.read_agent import ReadAgent  # <--- Import añadido
+from agents.read_agent import ReadAgent
 from agents.translate_agent import TranslateAgent
 from agents.summarize_agent import SummarizeAgent
 from agents.rewrite_agent import RewriteAgent
@@ -52,8 +52,8 @@ from agents.example_agent import ExampleAgent
 from agents.migrate_agent import MigrateAgent
 from agents.sprint_agent import SprintAgent
 from agents.ocr_agent import OcrAgent
+from agents.mcp_agent import McpAgent
 
-# Importar la UI
 from ui.tui_app import SeosApp
 
 
@@ -110,9 +110,7 @@ class Kernel:
         self.agent_manager.register("info", InfoAgent(context))
         self.agent_manager.register("tree", TreeAgent(context))
         self.agent_manager.register("find", FindAgent(context))
-        self.agent_manager.register(
-            "read", ReadAgent(context)
-        )  # <--- Registro corregido
+        self.agent_manager.register("read", ReadAgent(context))
         self.agent_manager.register("translate", TranslateAgent(context))
         self.agent_manager.register("summarize", SummarizeAgent(context))
         self.agent_manager.register("rewrite", RewriteAgent(context))
@@ -134,6 +132,7 @@ class Kernel:
         self.agent_manager.register("migrate", MigrateAgent(context))
         self.agent_manager.register("sprint", SprintAgent(context))
         self.agent_manager.register("ocr", OcrAgent(context))
+        self.agent_manager.register("mcp", McpAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"
@@ -153,13 +152,11 @@ class Kernel:
             logger.critical(f"Initialization failed: {ex}")
             return
 
-        # Iniciar la aplicación de pantalla completa
         app = SeosApp(kernel=self)
         app.run()
 
         self.shutdown()
 
     def shutdown(self):
-        # Usamos print normal porque la consola de Rich ya fue cerrada por Textual
         print("\nShutting down SEOS...")
         logger.info("SEOS terminated.")

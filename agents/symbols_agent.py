@@ -1,6 +1,6 @@
 """
 Symbols Agent.
-Displays Python symbols found in a source file.
+Displays code symbols found in a source file using UniversalAnalyzer.
 """
 
 from agents.base_project_agent import BaseProjectAgent
@@ -9,7 +9,7 @@ from skills.python_skill import PythonSkill
 
 class SymbolsAgent(BaseProjectAgent):
     description = (
-        "Display Python classes, methods, and functions. Usage: /symbols <file>"
+        "Display classes, methods, and functions in a code file. Usage: /symbols <file>"
     )
 
     def execute(self, argument: str) -> str:
@@ -20,32 +20,30 @@ class SymbolsAgent(BaseProjectAgent):
 
         filename = argument.strip()
         if not filename:
-            return "Usage: /symbols <python_file>"
+            return "Usage: /symbols <file>"
 
         skill = PythonSkill(project.root)
 
         try:
             symbols = skill.analyze_symbols(filename)
 
+            if not symbols:
+                return f"No symbols found in {filename}. (Is the language supported?)"
+
             lines = [f"Symbols in {filename}:"]
 
-            if symbols["classes"]:
+            classes = [s for s in symbols if s["type"] == "class"]
+            functions = [s for s in symbols if s["type"] == "function"]
+
+            if classes:
                 lines.append("\nClasses:")
-                for c in symbols["classes"]:
-                    lines.append(f"  - {c}")
+                for c in classes:
+                    lines.append(f"  - {c['name']} (Line {c['line']})")
 
-            if symbols["methods"]:
-                lines.append("\nMethods:")
-                for m in symbols["methods"]:
-                    lines.append(f"  - {m}")
-
-            if symbols["functions"]:
-                lines.append("\nFunctions:")
-                for f in symbols["functions"]:
-                    lines.append(f"  - {f}")
-
-            if not (symbols["classes"] or symbols["methods"] or symbols["functions"]):
-                lines.append("  No symbols found.")
+            if functions:
+                lines.append("\nFunctions/Methods:")
+                for f in functions:
+                    lines.append(f"  - {f['name']} (Line {f['line']})")
 
             return "\n".join(lines)
         except ValueError as ex:

@@ -32,4 +32,4 @@ seos = "main:main"
 
 [tool.setuptools]
 py-modules = ["main"]
-packages = ["core", "agents", "services", "skills", "analyzers", "providers", "processors", "managers", "api", "factories", "config"]
+packages = ["core", "agents", "services", "skills", "analyzers", "providers", "processors", "managers", "api", "factories", "config", "knowledge"]

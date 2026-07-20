@@ -1,23 +1,25 @@
 """
-Python Skill.
-Wraps Python specific operations like AST analysis and testing.
+Python Skill (Now Universal Code Skill).
+Wraps code analysis operations using UniversalAnalyzer.
 """
 
 import subprocess
 from pathlib import Path
-from analyzers.python_analyzer import PythonAnalyzer
+from analyzers.universal_analyzer import UniversalAnalyzer
 
 
 class PythonSkill:
     def __init__(self, root: str):
         self.root = root
-        self.analyzer = PythonAnalyzer()
+        self.analyzer = UniversalAnalyzer()
 
-    def analyze_symbols(self, relative_path: str) -> dict:
+    def analyze_symbols(self, relative_path: str) -> list:
         file_path = Path(self.root) / relative_path
-        if not file_path.exists() or file_path.suffix != ".py":
-            raise ValueError("File not found or not a Python file.")
-        return self.analyzer.analyze(file_path)
+        if not file_path.exists():
+            raise ValueError("File not found.")
+
+        knowledge = self.analyzer.analyze(file_path)
+        return knowledge.all()
 
     def run_tests(self) -> str:
         try:

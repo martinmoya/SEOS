@@ -57,6 +57,7 @@ from agents.ocr_agent import OcrAgent
 from agents.mcp_agent import McpAgent
 from agents.metrics_agent import MetricsAgent
 from agents.audit_agent import AuditAgent
+from agents.adr_agent import AdrAgent
 
 from ui.tui_app import SeosApp
 
@@ -94,7 +95,6 @@ class Kernel:
         vector_service = VectorService(Path.cwd())
         vector_service.index_project()
 
-        # Inyectamos métricas y auditoría en el LLMService
         llm = LLMService(
             self.provider, metrics_service=metrics_service, audit_service=audit_service
         )
@@ -147,6 +147,7 @@ class Kernel:
         self.agent_manager.register("mcp", McpAgent(context))
         self.agent_manager.register("metrics", MetricsAgent(context))
         self.agent_manager.register("audit", AuditAgent(context))
+        self.agent_manager.register("adr", AdrAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"

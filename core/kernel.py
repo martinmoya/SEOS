@@ -122,7 +122,15 @@ class Kernel:
         )
 
     def run(self):
-        self.initialize()
+        try:
+            self.initialize()
+        except Exception as ex:
+            self.console.print(
+                f"\n[bold red]FATAL ERROR DURING INITIALIZATION:[/bold red] {ex}\n"
+            )
+            logger.critical(f"Initialization failed: {ex}")
+            return
+
         self.console.print(
             "Type [cyan]/help[/cyan] for available commands or [cyan]/exit[/cyan] to quit.\n"
         )

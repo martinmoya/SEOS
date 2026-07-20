@@ -22,4 +22,19 @@ class LLMFactory:
 
             return OllamaProvider()
 
+        elif provider == "openai":
+            from providers.openai_provider import OpenAIProvider
+
+            return OpenAIProvider()
+
+        elif provider == "claude":
+            from providers.claude_provider import ClaudeProvider
+
+            return ClaudeProvider()
+
+        elif provider == "gemini":
+            from providers.gemini_provider import GeminiProvider
+
+            return GeminiProvider()
+
         raise ConfigurationError(f"Unsupported provider: {provider}")

@@ -47,6 +47,7 @@ from agents.serve_agent import ServeAgent
 from agents.github_agent import GithubAgent
 from agents.diagram_agent import DiagramAgent
 from agents.example_agent import ExampleAgent
+from agents.migrate_agent import MigrateAgent
 
 
 class Kernel:
@@ -113,6 +114,7 @@ class Kernel:
         self.agent_manager.register("github", GithubAgent(context))
         self.agent_manager.register("create_diagram", DiagramAgent(context))
         self.agent_manager.register("create_example", ExampleAgent(context))
+        self.agent_manager.register("migrate", MigrateAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"

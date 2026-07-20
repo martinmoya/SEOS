@@ -1,16 +1,14 @@
-# SEOS Post-v1.0 Backlog
+SEOS Post-v1.0 Backlog
 This document outlines the features and capabilities planned for future versions of SEOS (v1.x and beyond), picking up after the v1.0.0 release.
 
-## Milestone 1.1: Cloud AI Providers Integration
-Goal: Expand SEOS beyond local execution to support major cloud LLMs, enabling multi-provider routing and specialized capabilities.
+Milestone 1.1: Cloud AI Providers Integration
+Goal: Expand SEOS beyond local execution to support major cloud LLMs, enabling multi-provider routing.
 
 US-001: OpenAI Provider: Implement OpenAIProvider to connect to GPT-4o / GPT-4 models using the official OpenAI SDK. Since LM Studio already uses the OpenAI API format, this integration will be almost native.
 US-002: Google Gemini Provider: Implement GeminiProvider to support Gemini 1.5 Pro/Flash. This will unlock multimodal capabilities (Vision) allowing SEOS to analyze images, diagrams, or UI screenshots in the future.
 US-003: Anthropic Claude Provider: Implement ClaudeProvider for Claude 3.5 Sonnet, which is exceptional at coding and refactoring tasks.
 US-004: Multi-Provider Routing: Update LLMFactory and Settings to allow users to configure different providers for different tasks (e.g., use the local model for chat to save money, but route /review or heavy refactoring to GPT-4 or Claude).
-
-
-## Milestone 1.2: Multi-Language & Legacy Analysis (The "Legacy" Vision)
+Milestone 1.2: Multi-Language & Legacy Analysis (The "Legacy" Vision)
 Goal: Extend SEOS's understanding beyond Python to support legacy systems and modern languages.
 
 US-005: Universal AST Parser: Integrate tree-sitter to parse multiple languages (Java, C#, JavaScript, Go, Rust) uniformly.
@@ -18,65 +16,55 @@ US-006: Legacy Code Analyzer: Create analyzers for legacy languages (Perl, COBOL
 US-007: Universal Knowledge Graph: Update PythonKnowledge to a generic CodeKnowledge graph that stores entities from any language.
 US-008: Legacy Auto-Documentation: A specific agent (/legacy_doc) that reads an undocumented legacy file, infers its purpose, and generates a Markdown specification.
 US-009: Architecture Diagrams from Code: Automatically generate Mermaid UML diagrams (Class, Sequence, ERD) directly from the Knowledge Graph of any language.
-
-## Milestone 1.3: Code Migration Engine
+Milestone 1.3: Code Migration Engine
 Goal: Assist in modernizing applications by translating logic between languages.
 
 US-010: Language Translator Agent: /migrate <source_file> <target_language> (e.g., /migrate legacy_login.pl python).
 US-011: Dependency Mapping for Migration: Analyze external dependencies (e.g., Perl DBI to Python SQLAlchemy) and suggest modern equivalents.
 US-012: Migration Validation Pipeline: Compare the AST and execution output of the original legacy file against the newly generated modern file to ensure logic parity.
-
-## Milestone 1.4: Advanced AI & Memory (RAG)
+Milestone 1.4: Advanced AI & Memory (RAG)
 Goal: Give SEOS long-term memory and project-wide context.
 
 US-013: Vector Database Integration: Embed all project files into a local vector DB (e.g., ChromaDB) for semantic search.
 US-014: RAG Agent: Update ChatAgent to automatically query the vector DB for relevant code snippets across the whole project before answering.
 US-015: Long-Term Project Memory: Store architectural decisions, user preferences, and past refactoring history in a persistent knowledge base.
-
-## Milestone 1.5: Enterprise Multi-Agent Workflows
+Milestone 1.5: Enterprise Multi-Agent Workflows
 Goal: Fully autonomous software engineering teams.
 
 US-016: Team Builder Agent: Dynamically create a team of agents (Backend, QA, DBA) based on the user's high-level request.
 US-017: Autonomous Sprint Execution: /sprint "Create user login module" triggers a full workflow: Architect designs -> Coder writes -> Tester tests -> Reviewer approves.
-US-018: Conflict Resolution Engine: If the QA agent and Security agent disagree on a code implementation, a Lead Architect agent steps in to break the tie.
-
-## Milestone 1.6: UI & UX Enhancements
+US-018: Consensus & Conflict Resolution Engine: If agents (e.g., Security and Performance) disagree on a code implementation, a Lead Architect agent evaluates the proposals and breaks the tie.
+Milestone 1.6: UI & UX Enhancements
 Goal: Move beyond the CLI to a rich visual experience.
 
 US-019: Web Dashboard: A React/Next.js frontend consuming the SEOS REST API to visualize the Knowledge Graph, agent logs, and metrics.
 US-020: VS Code Extension v2: Inline code diffs for refactoring, sidebar panel for SEOS chat, and automatic error highlighting.
 US-021: TUI Dashboard: A full-screen terminal UI (using Textual) with split panes for file tree, chat, and logs.
-
-## Milestone 1.7: Advanced Document Fidelity & Conversion
+Milestone 1.7: Advanced Document Fidelity & Conversion
 Goal: Achieve 100% visual fidelity when translating or converting documents, handling complex layouts, images, and scanned files.
 
 US-022: Advanced PDF Translation: Replace the basic pypdf text extraction with a layout-aware parser (like pdfplumber or PyMuPDF) to preserve columns, fonts, and table structures in the translated PDF.
 US-023: OCR Integration: Integrate Tesseract or an LLM-based Vision model to translate text embedded in images within DOCX/PPTX files, or entirely scanned PDF documents.
 US-024: Cross-Format Conversion Pipeline: Implement true format conversion (e.g., /convert manual.docx pdf) that preserves images, tables, and styling across formats using headless LibreOffice or specialized libraries.
 US-025: Image Extraction & Re-insertion: Automatically extract images from source documents, keep them in place, and ensure they are correctly re-inserted into the translated destination document.
-
-## Milestone 1.7: Advanced AI & MCP Ecosystem
+Milestone 1.8: Advanced AI & MCP Ecosystem
 Goal: Expand SEOS beyond local text models into a multi-modal, highly connected ecosystem.
 
-US-026: Multi-Cloud AI Routing: Implement a ProviderRegistry to route specific tasks to specialized cloud AIs (e.g., OpenAI for complex logic, Gemini for Vision/Image analysis, ElevenLabs for Audio).
+US-026: Multimodal Routing: Implement a ProviderRegistry to route specific inputs to specialized cloud AIs (e.g., route image inputs to Gemini for Vision/Image analysis, or audio inputs to ElevenLabs/Wisper for transcription).
 US-027: MCP (Model Context Protocol) Client: Allow SEOS to act as an MCP client, connecting to external MCP servers (e.g., filesystem, external databases, third-party APIs) to expand its toolset.
-US-028: Consensus & Conflict Resolution Engine: When multiple agents (e.g., Security and Performance) disagree on a code implementation, a Lead Architect agent evaluates the proposals and breaks the tie.
-
-## Milestone 1.8: Enterprise Metrics & Audit
+Milestone 1.9: Enterprise Metrics & Audit
 Goal: Provide observability and control for teams using SEOS.
 
-US-029: Productivity Metrics Dashboard: Track and display statistics (tokens used, lines of code generated, time saved) in a visual dashboard via the REST API.
-US-030: Audit Logging System: Maintain an immutable, exportable log of all autonomous actions and file modifications made by SEOS agents.
-
-## Milestone 1.9: Self-Development (Dogfooding)
+US-028: Productivity Metrics Dashboard: Track and display statistics (tokens used, lines of code generated, time saved) in a visual dashboard via the REST API.
+US-029: Audit Logging System: Maintain an immutable, exportable log of all autonomous actions and file modifications made by SEOS agents.
+Milestone 1.10: Self-Development (Dogfooding)
 Goal: Use SEOS to develop SEOS.
 
-US-031: Auto-ADR Generation: SEOS automatically detects significant architectural changes in commits and drafts the corresponding ADR.
-US-032: Self-Review Pipeline: SEOS runs /review on its own pull requests before submitting them.
-US-033: Autonomous Backlog Grooming: SEOS analyzes closed issues and suggests new User Stories based on code gaps.
-
-## Milestone 1.10: Plugin Marketplace & Distribution
+US-030: Auto-ADR Generation: SEOS automatically detects significant architectural changes in commits and drafts the corresponding ADR.
+US-031: Self-Review Pipeline: SEOS runs /review on its own pull requests before submitting them.
+US-032: Autonomous Backlog Grooming: SEOS analyzes closed issues and suggests new User Stories based on code gaps.
+Milestone 1.11: Plugin Marketplace & Distribution
 Goal: Foster a community-driven ecosystem.
 
-US-034: Plugin Manifest Specification: Define a standard plugin.yaml format for third-party agents and skills.
-US-035: Plugin Manager CLI: Commands like /install <plugin_name> and /uninstall <plugin_name> to fetch community plugins from a registry.
+US-033: Plugin Manifest Specification: Define a standard plugin.yaml format for third-party agents and skills.
+US-034: Plugin Manager CLI: Commands like /install <plugin_name> and /uninstall <plugin_name> to fetch community plugins from a registry.

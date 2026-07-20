@@ -38,17 +38,16 @@ class Settings:
     TEMPERATURE = float(_get.__func__("TEMPERATURE"))
     MAX_TOKENS = int(_get.__func__("MAX_TOKENS"))
 
-    # Cloud: OpenAI
+    # Cloud
     OPENAI_API_KEY = get_optional.__func__("OPENAI_API_KEY")
     OPENAI_MODEL = get_optional.__func__("OPENAI_MODEL") or "gpt-4o"
-
-    # Cloud: Claude
     CLAUDE_API_KEY = get_optional.__func__("CLAUDE_API_KEY")
     CLAUDE_MODEL = get_optional.__func__("CLAUDE_MODEL") or "claude-3-5-sonnet-20240620"
-
-    # Cloud: Gemini
     GEMINI_API_KEY = get_optional.__func__("GEMINI_API_KEY")
     GEMINI_MODEL = get_optional.__func__("GEMINI_MODEL") or "gemini-1.5-pro"
 
     # GitHub
     GITHUB_TOKEN = get_optional.__func__("GITHUB_TOKEN")
+
+    # Enterprise API Security
+    SEOS_API_KEY = get_optional.__func__("SEOS_API_KEY")

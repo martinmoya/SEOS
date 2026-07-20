@@ -28,6 +28,7 @@ from services.audit_service import AuditService
 
 from managers.agent_manager import AgentManager
 
+# Agents
 from agents.chat_agent import ChatAgent
 from agents.open_agent import OpenAgent
 from agents.info_agent import InfoAgent
@@ -118,7 +119,6 @@ class Kernel:
             audit_service=audit_service,
         )
 
-        # 1. Registrar agentes nativos
         self.agent_manager.register("chat", ChatAgent(context))
         self.agent_manager.register("open", OpenAgent(context))
         self.agent_manager.register("info", InfoAgent(context))
@@ -151,7 +151,6 @@ class Kernel:
         self.agent_manager.register("audit", AuditAgent(context))
         self.agent_manager.register("adr", AdrAgent(context))
 
-        # 2. Cargar Plugins de terceros
         plugin_manager = PluginManager()
         loaded = plugin_manager.load_plugins(self.agent_manager, context)
         if loaded:
@@ -165,11 +164,14 @@ class Kernel:
         self.console.print(
             "[bold green]✓ Provider connected successfully.[/bold green]"
         )
-        self.console.print("[bold blue]Starting TUI...[/bold blue]")
 
     def run(self):
+        """Arranca la interfaz gráfica de consola (TUI)."""
         try:
             self.initialize()
+            self.console.print("[bold blue]Starting TUI...[/bold blue]")
+            app = SeosApp(kernel=self)
+            app.run()
         except Exception as ex:
             self.console.print(
                 f"\n[bold red]FATAL ERROR DURING INITIALIZATION:[/bold red] {ex}\n"
@@ -177,8 +179,25 @@ class Kernel:
             logger.critical(f"Initialization failed: {ex}")
             return
 
-        app = SeosApp(kernel=self)
-        app.run()
+        self.shutdown()
+
+    def run_headless(self):
+        """Arranca el servidor REST sin interfaz gráfica, ideal para servidores."""
+        try:
+            self.initialize()
+            self.console.print(
+                "[bold blue]Starting Headless REST API Server (Port 8080)...[/bold blue]"
+            )
+            import uvicorn
+
+            # El servidor corre bloqueando el hilo principal
+            uvicorn.run("api.rest_app:app", host="0.0.0.0", port=8080, log_level="info")
+        except Exception as ex:
+            self.console.print(
+                f"\n[bold red]FATAL ERROR DURING INITIALIZATION:[/bold red] {ex}\n"
+            )
+            logger.critical(f"Initialization failed: {ex}")
+            return
 
         self.shutdown()
 

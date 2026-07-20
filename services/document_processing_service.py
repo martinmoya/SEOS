@@ -12,7 +12,11 @@ class DocumentProcessingService:
 
     def process(self, source: Path, output_suffix: str) -> Path:
         suffix = source.suffix.lower()
-        destination = source.with_suffix(f".{output_suffix}{source.suffix}")
+
+        # Forzar que los documentos procesados se guarden en projects/
+        dest_dir = Path("projects")
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        destination = dest_dir / f"{source.stem}.{output_suffix}{source.suffix}"
 
         if suffix in (".txt", ".md"):
             self._process_text(source, destination)

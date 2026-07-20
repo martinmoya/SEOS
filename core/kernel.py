@@ -30,6 +30,7 @@ from agents.open_agent import OpenAgent
 from agents.info_agent import InfoAgent
 from agents.tree_agent import TreeAgent
 from agents.find_agent import FindAgent
+from agents.read_agent import ReadAgent  # <--- Import añadido
 from agents.translate_agent import TranslateAgent
 from agents.summarize_agent import SummarizeAgent
 from agents.rewrite_agent import RewriteAgent
@@ -50,6 +51,10 @@ from agents.diagram_agent import DiagramAgent
 from agents.example_agent import ExampleAgent
 from agents.migrate_agent import MigrateAgent
 from agents.sprint_agent import SprintAgent
+from agents.ocr_agent import OcrAgent
+
+# Importar la UI
+from ui.tui_app import SeosApp
 
 
 class Kernel:
@@ -105,6 +110,9 @@ class Kernel:
         self.agent_manager.register("info", InfoAgent(context))
         self.agent_manager.register("tree", TreeAgent(context))
         self.agent_manager.register("find", FindAgent(context))
+        self.agent_manager.register(
+            "read", ReadAgent(context)
+        )  # <--- Registro corregido
         self.agent_manager.register("translate", TranslateAgent(context))
         self.agent_manager.register("summarize", SummarizeAgent(context))
         self.agent_manager.register("rewrite", RewriteAgent(context))
@@ -125,13 +133,15 @@ class Kernel:
         self.agent_manager.register("create_example", ExampleAgent(context))
         self.agent_manager.register("migrate", MigrateAgent(context))
         self.agent_manager.register("sprint", SprintAgent(context))
+        self.agent_manager.register("ocr", OcrAgent(context))
 
         self.console.print(
             f"[bold green]✓ Knowledge loaded:[/bold green] {knowledge_service.get_stats()}"
         )
         self.console.print(
-            "[bold green]✓ Provider connected successfully.[/bold green]\n"
+            "[bold green]✓ Provider connected successfully.[/bold green]"
         )
+        self.console.print("[bold blue]Starting TUI...[/bold blue]")
 
     def run(self):
         try:
@@ -143,53 +153,13 @@ class Kernel:
             logger.critical(f"Initialization failed: {ex}")
             return
 
-        self.console.print(
-            "Type [cyan]/help[/cyan] for available commands or [cyan]/exit[/cyan] to quit.\n"
-        )
-
-        while True:
-            try:
-                prompt = input("> ")
-            except EOFError:
-                break
-
-            command, argument = self.parser.parse(prompt)
-
-            if command in ["exit", "quit", "bye"]:
-                break
-
-            if command == "help":
-                if argument:
-                    agent = self.agent_manager.get(argument)
-                    if agent:
-                        self.console.print(
-                            f"\n[cyan]/{argument}[/cyan]\n  {agent.description}\n"
-                        )
-                    else:
-                        self.console.print(
-                            f"\n[red]Unknown command:[/red] /{argument}\n"
-                        )
-                else:
-                    self.console.print("\n[bold]Available commands:[/bold]")
-                    for cmd in self.agent_manager.list():
-                        self.console.print(f"  [cyan]/{cmd}[/cyan]")
-                    self.console.print("  [cyan]/help[/cyan] [command]")
-                    self.console.print("  [cyan]/exit[/cyan] (or /quit, /bye)\n")
-                continue
-
-            try:
-                agent = self.agent_manager.get(command)
-                if agent:
-                    response = agent.execute(argument)
-                    self.console.print(f"\n{response}\n")
-                else:
-                    self.console.print(f"\n[red]Unknown command:[/red] /{command}\n")
-            except Exception as ex:
-                logger.error(f"Error executing command {command}: {ex}")
-                self.console.print(f"\n[bold red]ERROR:[/bold red] {ex}\n")
+        # Iniciar la aplicación de pantalla completa
+        app = SeosApp(kernel=self)
+        app.run()
 
         self.shutdown()
 
     def shutdown(self):
-        self.console.print("\n[yellow]Shutting down SEOS...[/yellow]")
+        # Usamos print normal porque la consola de Rich ya fue cerrada por Textual
+        print("\nShutting down SEOS...")
         logger.info("SEOS terminated.")

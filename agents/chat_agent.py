@@ -18,6 +18,22 @@ class ChatAgent(BaseAgent):
 
         system_prompt, user_prompt = self.context.prompt_service.build_prompt(argument)
 
+        # --- RAG Integration ---
+        # Buscar contexto en la base de datos vectorial
+        vector_context = self.context.vector_service.query(user_prompt)
+        if vector_context:
+            context_instruction = (
+                "\n\nPROJECT CONTEXT (Retrieved from local codebase):\n"
+                "Use the following code snippets to answer the user's question if relevant. "
+                "Ignore it if the question is general.\n\n"
+                f"{vector_context}\n\n---\n"
+            )
+            if system_prompt:
+                system_prompt += context_instruction
+            else:
+                system_prompt = context_instruction.strip()
+        # -----------------------
+
         delegation_instructions = (
             "\n\nCRITICAL ORCHESTRATION RULES:\n"
             "You are an orchestrator and a helpful assistant. You can delegate tasks to other agents using the EXACT format: DELEGATE: /<command> <argument>\n"
@@ -35,34 +51,28 @@ class ChatAgent(BaseAgent):
         else:
             system_prompt = delegation_instructions.strip()
 
-        # Obtenemos el historial de la conversación
         history = self.context.conversation_service.get_history()
-
         response = self.context.llm.generate(
             user_prompt, system=system_prompt, history=history
         )
 
-        # Verificar si el LLM decidió delegar
         match = re.search(r"DELEGATE:\s*(/\S+)\s*(.*)", response)
         if match:
             command = match.group(1).replace("/", "")
             arg = match.group(2).strip()
 
-            # Verificamos que el agente realmente exista antes de delegar
             if not self.context.agent_service.agent_manager.get(command):
-                return response  # Si inventó un agente, devolvemos la respuesta normal
+                return response
 
             console = Console()
             console.print(f"\n[bold yellow]Delegating to /{command}...[/bold yellow]")
             final_response = self.context.agent_service.delegate(command, arg)
 
-            # Guardamos en memoria lo que el usuario pidió y el resultado de la delegación
             self.context.conversation_service.add_message("user", user_prompt)
             self.context.conversation_service.add_message("assistant", final_response)
 
             return final_response
 
-        # Si es una respuesta normal de chat, la guardamos en memoria
         self.context.conversation_service.add_message("user", user_prompt)
         self.context.conversation_service.add_message("assistant", response)
 

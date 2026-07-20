@@ -21,6 +21,7 @@ from services.knowledge_service import KnowledgeService
 from services.prompt_service import PromptService
 from services.agent_service import AgentService
 from services.conversation_service import ConversationService
+from services.vector_service import VectorService
 
 from managers.agent_manager import AgentManager
 
@@ -75,6 +76,13 @@ class Kernel:
         prompt_service = PromptService(knowledge_service)
         conversation_service = ConversationService()
 
+        # Inicializar Base de Datos Vectorial e indexar el proyecto
+        self.console.print(
+            "[bold blue]Indexing project for RAG (Vector DB)...[/bold blue]"
+        )
+        vector_service = VectorService(Path.cwd())
+        vector_service.index_project()
+
         llm = LLMService(self.provider)
         workspace = Workspace()
         workspace_service = WorkspaceService(workspace)
@@ -89,6 +97,7 @@ class Kernel:
             prompt_service=prompt_service,
             agent_service=agent_service,
             conversation_service=conversation_service,
+            vector_service=vector_service,
         )
 
         self.agent_manager.register("chat", ChatAgent(context))

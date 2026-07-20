@@ -34,7 +34,6 @@ logs/*.log
 # Local configuration
 *.local
 .env
-.env.*
 
 # LM Studio
 models/
@@ -52,3 +51,6 @@ models/
 
 #WORD Documents
 *.docx
+
+# SEOS Vector DB
+.seos_vector_db/

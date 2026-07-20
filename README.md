@@ -208,6 +208,24 @@ Install.
 pip install -e .
 ```
 
+Configure your environment.
+
+Create the configuration file.
+
+Windows
+
+```bash
+copy .env.template .env
+```
+
+Linux
+
+```bash
+cp .env.template .env
+```
+
+Edit the `.env` file with your local LLM settings (e.g., LM Studio or Ollama URL).
+
 Run.
 
 ```bash

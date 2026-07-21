@@ -65,6 +65,7 @@ from agents.mkdir_agent import MkdirAgent
 from agents.ls_agent import LsAgent
 from agents.save_agent import SaveAgent
 from agents.write_agent import WriteAgent
+from agents.reindex_agent import ReindexAgent
 
 from ui.tui_app import SeosApp
 
@@ -75,6 +76,7 @@ class Kernel:
         self.parser = CommandParser()
         self.agent_manager = AgentManager()
         self.console = Console()
+        self.vector_service = None
 
     def initialize(self):
         show_banner()
@@ -99,8 +101,9 @@ class Kernel:
         self.console.print(
             "[bold blue]Indexing project for RAG (Vector DB)...[/bold blue]"
         )
-        vector_service = VectorService(Path.cwd())
-        vector_service.index_project()
+        self.vector_service = VectorService(Path.cwd())
+        self.vector_service.index_project()
+        self.vector_service.start_watcher()
 
         llm = LLMService(
             self.provider, metrics_service=metrics_service, audit_service=audit_service
@@ -119,7 +122,7 @@ class Kernel:
             prompt_service=prompt_service,
             agent_service=agent_service,
             conversation_service=conversation_service,
-            vector_service=vector_service,
+            vector_service=self.vector_service,
             metrics_service=metrics_service,
             audit_service=audit_service,
         )
@@ -155,14 +158,13 @@ class Kernel:
         self.agent_manager.register("metrics", MetricsAgent(context))
         self.agent_manager.register("audit", AuditAgent(context))
         self.agent_manager.register("adr", AdrAgent(context))
-
-        # Nuevos agentes Sprint 34
         self.agent_manager.register("list", ListAgent(context))
         self.agent_manager.register("load", LoadAgent(context))
         self.agent_manager.register("mkdir", MkdirAgent(context))
         self.agent_manager.register("ls", LsAgent(context))
         self.agent_manager.register("save", SaveAgent(context))
         self.agent_manager.register("write", WriteAgent(context))
+        self.agent_manager.register("reindex", ReindexAgent(context))
 
         plugin_manager = PluginManager()
         loaded = plugin_manager.load_plugins(self.agent_manager, context)
@@ -212,5 +214,7 @@ class Kernel:
         self.shutdown()
 
     def shutdown(self):
+        if self.vector_service:
+            self.vector_service.stop_watcher()
         print("\nShutting down SEOS...")
         logger.info("SEOS terminated.")

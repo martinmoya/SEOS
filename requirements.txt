@@ -18,3 +18,4 @@ textual>=0.50.0
 pdfplumber>=0.11.0
 pytesseract>=0.3.10
 Pillow>=10.0.0
+watchdog>=4.0.0

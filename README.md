@@ -2,509 +2,187 @@
 
 ### Software Engineering Operating System
 
-> **The AI Operating System for Software Engineering**
+> **An AI-Orchestrated Autonomous Platform for Software Engineering**
 >
-> **Analyze • Design • Build • Refactor • Document • Test • Deploy**
+> **Analyze • Design • Build • Refactor • Document • Test • Deploy • Execute**
 
 ---
 
-![Python](https://img.shields.io/badge/Python-3.12+-blue)
+![Version](https://img.shields.io/badge/Version-v3.0.0-blue)
+
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Version](https://img.shields.io/badge/Version-v2.0.0-orange)
+
+![Python](https://img.shields.io/badge/Python-3.10+-yellow)
+
+![Status](https://img.shields.io/badge/Status-Stable-success)
+
+---
+
+**🇪🇸 [Leer en Español](README.es.md)**
 
 ---
 
 # 🚀 What is SEOS?
 
-SEOS (**Software Engineering Operating System**) is a **Local-First**, AI-orchestrated platform designed to support software engineers throughout the entire Software Development Life Cycle (SDLC).
+SEOS (**Software Engineering Operating System**) is a **local-first**, AI-orchestrated platform designed to support software engineers throughout the entire software development lifecycle.
 
-Unlike traditional AI coding assistants that simply answer prompts, SEOS understands your workspace, your architecture, your documentation, and your engineering goals. It coordinates specialized AI agents that collaborate as a real software engineering team.
-
-SEOS is designed to become the **Operating System for Software Engineering**, enabling developers to interact with their projects using natural language while maintaining full ownership and control of their codebase.
+Unlike traditional coding assistants, SEOS executes complete engineering workflows autonomously.
 
 ---
 
-# ✨ Why SEOS?
+# ⚡ The Paradigm Shift (v3.0.0)
 
-Modern AI assistants are excellent at answering questions.
+SEOS is no longer just an AI chat.
 
-SEOS goes one step further.
+It is an **Autonomous Engineering Engine**.
 
-SEOS **orchestrates engineering workflows**.
-
-Instead of asking:
-
-> "Write me a Python function."
-
-You can ask:
-
-> Analyze this legacy application.
-
-or
-
-> Review the architecture of this project.
-
-or
-
-> Generate unit tests for every uncovered module.
-
-or
-
-> Translate this document while preserving every table and image.
-
-or
-
-> Create an ADR explaining this design decision.
-
-SEOS understands the context, selects the appropriate specialists, coordinates their work, and produces a coherent engineering result instead of isolated answers.
+Instead of printing generated code to the terminal for manual copy & paste, SEOS writes engineering artifacts directly to your project, respecting its architecture and conventions.
 
 ---
 
-# 🎯 Vision
+# ✨ Current Features (v3.0.0)
 
-SEOS is built around one fundamental idea:
+## 🤖 Autonomous Execution
 
-> **Software Engineering should be orchestrated, not automated.**
-
-Artificial Intelligence should amplify software engineers—not replace them.
-
-Developers remain in control while specialized AI agents execute repetitive, time-consuming, and context-aware engineering tasks.
-
-The long-term vision is to provide a complete engineering platform capable of understanding existing software, designing new systems, generating production-ready code, documenting architecture, coordinating engineering workflows, and integrating seamlessly into modern development environments.
+- Autonomous file generation
+- Automatic JSON extraction
+- Automatic Markdown extraction
+- Direct file writing
 
 ---
 
-# ⭐ Core Principles
+## 🧠 Multi-Provider AI
 
-SEOS follows a small set of engineering principles that influence every component of the platform.
+Supports both local and cloud providers with token tracking.
 
----
+### Local
 
-## 👤 Human in Control
+- LM Studio
+- Ollama
 
-Artificial Intelligence assists engineers.
+### Cloud
 
-It never replaces engineering judgment.
-
-The developer always owns the final decision.
-
----
-
-## 💻 Local First
-
-Your projects remain under your control.
-
-Whenever possible, processing occurs locally using models running on your own infrastructure.
-
----
-
-## 🔌 Provider Agnostic
-
-SEOS is not tied to a single AI vendor.
-
-Choose the provider that best fits your needs, whether local or cloud-based.
-
----
-
-## 🏗 Engineering over Code Generation
-
-Generating code is only one small part of software engineering.
-
-SEOS focuses on the complete engineering lifecycle, including:
-
-- Analysis
-- Architecture
-- Documentation
-- Refactoring
-- Testing
-- Deployment
-- Maintenance
-
----
-
-## 🧩 Modular by Design
-
-Every major capability is designed as an independent component.
-
-This modular architecture simplifies maintenance, testing, and future expansion.
-
----
-
-## 🔄 Extensible
-
-New agents, providers, document processors, analyzers, and integrations can be added without modifying the platform's core architecture.
-
----
-
-## 📊 Observable
-
-Engineering activities should be measurable.
-
-SEOS records metrics, execution information, and operational events to improve transparency and diagnostics.
-
----
-
-## 🔒 Enterprise Ready
-
-The platform is designed with professional environments in mind.
-
-Core objectives include:
-
-- Security
-- Privacy
-- Auditability
-- Reproducibility
-- Long-term maintainability
-
----
-
-# 🛡 Why Local First?
-
-Many AI development platforms require sending your entire project to external services.
-
-SEOS follows a different philosophy.
-
-### Benefits of Local-First Engineering
-
-- ✅ Your source code remains on your machine.
-- ✅ Work completely offline when using local models.
-- ✅ Bring your own LLM provider.
-- ✅ No vendor lock-in.
-- ✅ Lower operating costs.
-- ✅ Enterprise-friendly deployment.
-- ✅ Faster iteration during development.
-- ✅ Full control over your infrastructure.
-- ✅ Better privacy for proprietary projects.
-- ✅ Easier compliance with organizational security policies.
-
-When cloud providers are preferred, SEOS allows them as interchangeable providers without changing the overall engineering workflow.
-
----
-
----
-
-# ✨ Features
-
-SEOS is composed of independent modules that work together to provide a complete Software Engineering platform.
-
----
-
-## 🤖 AI Integration
-
-SEOS supports multiple AI providers, allowing you to choose between **local** and **cloud** models without changing your engineering workflow.
-
-### Features
-
-- Multi-provider architecture
-- Local-first execution
-- Cloud provider support
-- Token usage tracking
-- Unified provider interface
-- Provider failover (planned)
-- Configurable model selection
-- Session metrics
+- OpenAI
+- Claude
+- Gemini
 
 ---
 
 ## 📁 Workspace Intelligence
 
-SEOS understands your projects beyond individual files.
-
-### Capabilities
-
-- Automatic project discovery
-- Multi-project workspace management
-- Intelligent file navigation
+- Multi-project management
+- Workspace navigation
 - Context awareness
-- Dependency analysis
-- Project indexing
-- Source tree exploration
-- Engineering context persistence
+- AST analysis
+
+Supported languages:
+
+- Python
+- Java
+- JavaScript
+- C#
+- Rust
+- Perl
 
 ---
 
-## 📄 Documentation Engine
+## 📄 Document Engine
 
-Create, translate and improve technical documentation while preserving formatting whenever possible.
-
-### Supported Operations
-
-- Translation
+- Batch translation
 - Summarization
 - Rewriting
-- Technical documentation generation
-- ADR generation
-- README generation
-- Markdown enhancement
-- OCR-enabled document processing
+- Format preservation
 
 ---
 
-## 🧠 Knowledge Engine
-
-The Knowledge Engine stores reusable engineering knowledge used by specialized agents.
-
-### Components
-
-- Roles
-- Rules
-- Capabilities
-- Skills
-- Prompts
-- Templates
-- Best Practices
-- Engineering Standards
-
-### Current Knowledge Base
-
-| Component | Status |
-|-----------|:------:|
-| Roles | ✅ |
-| Rules | ✅ |
-| Capabilities | ✅ |
-| Skills | ✅ |
-| Templates | ✅ |
-| Best Practices | ✅ |
-
----
-
-## 🏭 Software Factory
-
-SEOS automates repetitive engineering activities while keeping developers in control.
-
-### Current Capabilities
+## 🏗 Software Factory
 
 - Code scaffolding
-- Project generation
-- FastAPI generation
-- SQLAlchemy generation
-- Docker generation
-- Configuration generation
+- API generation
+- Database generation
 - Safe refactoring
-- Static analysis
-- Test generation
-- Code review
-- Dependency analysis
-- Architecture documentation
+- Automatic test generation
 
 ---
 
-## 👥 Multi-Agent System
+## 🤝 Multi-Agent Workflows
 
-SEOS coordinates specialized AI agents instead of relying on a single assistant.
+Autonomous engineering workflows coordinated through specialized agents.
 
-Examples include:
+Example:
 
-- Architect
-- Developer
-- Reviewer
-- Tester
-- Documentation Agent
-- Translator
-- Refactoring Agent
-- Security Reviewer
-- Project Analyzer
+```text
+User
 
-Each agent performs a specific engineering responsibility while collaborating with the others.
+ │
+
+ ▼
+
+Architect
+
+ │
+
+ ▼
+
+Developer
+
+ │
+
+ ▼
+
+Reviewer
+
+ │
+
+ ▼
+
+Tester
+
+ │
+
+ ▼
+
+Documentation
+
+ │
+
+ ▼
+
+Completed Sprint
+```
 
 ---
 
-## 🌐 Integrations
+## 🧠 RAG & Memory
 
-Current integrations include:
+- ChromaDB integration
+- Semantic code search
+- Conversational memory
 
-- Git
-- GitHub
+---
+
+## 🔍 Project Intelligence
+
+- Cross-reference dependency graphs
+- Impact analysis
+- Dead code detection
+- Sequence diagram generation
+
+---
+
+## 🔌 Integrations
+
 - REST API
-- FastAPI
-- VS Code
-- Local LLMs
+- GitHub API
+- VS Code Extension
 - MCP Client
-
-Future integrations will expand the platform without changing its architecture.
 
 ---
 
 ## 🧩 Plugin System
 
-SEOS is designed to be extended.
-
-Third-party developers can add:
-
-- AI Agents
-- Skills
-- Providers
-- Commands
-- Services
-- Document processors
-- Project analyzers
-
-Plugins are loaded dynamically at runtime.
-
----
-
-# 🔌 Supported AI Providers
-
-## ✅ Local Providers
-
-| Provider | Status |
-|----------|:------:|
-| LM Studio | ✅ |
-| Ollama | ✅ |
-
----
-
-## ✅ Cloud Providers
-
-| Provider | Status |
-|----------|:------:|
-| OpenAI | ✅ |
-| Anthropic Claude | ✅ |
-| Google Gemini | ✅ |
-
----
-
-## 🚧 Planned Providers
-
-| Provider | Status |
-|----------|:------:|
-| Azure OpenAI | 🚧 |
-| AWS Bedrock | 🚧 |
-| OpenRouter | 🚧 |
-| Cohere | 🚧 |
-| Mistral AI | 🚧 |
-| Groq | 🚧 |
-| Together AI | 🚧 |
-| DeepSeek | 🚧 |
-| Fireworks AI | 🚧 |
-| Cerebras | 🚧 |
-
----
-
-# 📄 Supported Documents
-
-| Format | Read | Write | Translate | Summarize | Rewrite | OCR |
-|---------|:----:|:-----:|:---------:|:---------:|:-------:|:---:|
-| TXT | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| Markdown | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| PDF | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| DOCX | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| XLSX | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-| PPTX | ✅ | ✅ | ✅ | ✅ | ✅ | — |
-
----
-
-# 💻 Supported Programming Languages
-
-| Language | Analysis | Generation | Refactoring |
-|----------|:--------:|:----------:|:-----------:|
-| Python | ✅ | ✅ | ✅ |
-| Java | ✅ | 🚧 | 🚧 |
-| JavaScript | ✅ | 🚧 | 🚧 |
-| TypeScript | 🚧 | 🚧 | 🚧 |
-| C# | ✅ | 🚧 | 🚧 |
-| C++ | 🚧 | 🚧 | 🚧 |
-| Go | 🚧 | 🚧 | 🚧 |
-| Rust | 🚧 | 🚧 | 🚧 |
-| Kotlin | 🚧 | 🚧 | 🚧 |
-| Swift | 🚧 | 🚧 | 🚧 |
-
----
-
-# 🏛 Platform Architecture
-
-SEOS is organized into independent layers following **Clean Architecture** principles.
-
-Business logic remains isolated from providers, integrations, user interfaces and infrastructure, allowing each component to evolve independently.
-
----
-
-# 🏛 Architecture
-
-SEOS follows **Clean Architecture**, separating orchestration, business logic, infrastructure, providers, integrations, and user interfaces.
-
-Each layer has a single responsibility, allowing the platform to evolve without creating unnecessary coupling.
-
-```text
-                              User
-                               │
-                               ▼
-                    Command Line Interface
-                               │
-                               ▼
-                    Intent Recognition Engine
-                               │
-         ┌─────────────────────┴─────────────────────┐
-         ▼                                           ▼
-  Conversation Agent                         Command Router
-         │                                           │
-         └─────────────────────┬─────────────────────┘
-                               ▼
-                     Multi-Agent Orchestrator
-                               │
- ┌──────────────┬──────────────┼──────────────┬──────────────┐
- ▼              ▼              ▼              ▼              ▼
-Architect     Developer     Reviewer      Tester     Documentation
-   Agent         Agent         Agent        Agent          Agent
- └──────────────┴──────────────┼──────────────┴──────────────┘
-                               ▼
-                      Services & Skills Layer
-                               │
-      ┌──────────────┬──────────┴──────────┬──────────────┐
-      ▼              ▼                     ▼              ▼
- Workspace      Knowledge Base      Document Engine   Git Services
-      │              │                     │              │
-      └──────────────┴──────────┬──────────┴──────────────┘
-                                ▼
-                     Provider Abstraction Layer
-                                │
-       ┌──────────────┬──────────┼──────────┬──────────────┐
-       ▼              ▼          ▼          ▼              ▼
-   LM Studio       Ollama     OpenAI     Claude        Gemini
-                                │
-                                ▼
-                        Engineering Result
-```
-
-SEOS isolates providers from engineering logic.
-
-Changing from LM Studio to OpenAI—or any future provider—does not require modifying the business logic.
-
----
-
-# 🤖 Multi-Agent Workflow
-
-Rather than relying on a single AI model, SEOS coordinates multiple specialized agents.
-
-Each agent focuses on a specific engineering responsibility.
-
-```text
-                    User Request
-                          │
-                          ▼
-                 Intent Recognition
-                          │
-                          ▼
-                 Task Decomposition
-                          │
-          ┌───────────────┼───────────────┐
-          ▼               ▼               ▼
-     Architect       Developer       Documentation
-        Agent           Agent            Agent
-          │               │               │
-          └───────────────┼───────────────┘
-                          ▼
-                     Code Reviewer
-                          │
-                          ▼
-                    Test Generation
-                          │
-                          ▼
-                  Final Engineering Result
-```
-
-This orchestration enables SEOS to execute complete engineering workflows instead of isolated prompt responses.
+- Dynamic plugin loading
+- Install plugins directly from Git repositories
 
 ---
 
@@ -540,7 +218,7 @@ source .venv/bin/activate
 
 ---
 
-## Install SEOS
+## Install
 
 ```bash
 pip install -e .
@@ -548,274 +226,51 @@ pip install -e .
 
 ---
 
-# ⚙️ Configuration
+## Configuration
 
-Copy the template configuration file.
+Copy the environment template.
 
-### Windows
-
-```bash
-copy .env.example .env
+```text
+.env.example → .env
 ```
 
-### Linux / macOS
+Configure:
 
-```bash
-cp .env.example .env
-```
-
-Configure your preferred provider.
-
-```ini
-LLM_PROVIDER=lmstudio
-
-LMSTUDIO_URL=http://127.0.0.1:1234/v1
-
-MODEL=meta-llama-3-8b-instruct
-
-TEMPERATURE=0.2
-
-MAX_TOKENS=4096
-```
-
-For cloud providers, configure the corresponding API keys.
-
-Example:
-
-```ini
-OPENAI_API_KEY=
-
-ANTHROPIC_API_KEY=
-
-GOOGLE_API_KEY=
-```
+- `LLM_PROVIDER`
+- Provider API Keys
+- `SEOS_API_KEY`
 
 ---
 
-# ▶ Running SEOS
+# ▶ Usage
 
-Interactive mode:
+## Interactive Mode
 
 ```bash
 seos
 ```
 
-Headless mode:
+---
+
+## Headless Mode
 
 ```bash
 seos --headless
 ```
 
-REST API:
-
-```bash
-seos serve
-```
-
 ---
 
-# 💬 Example Session
-
-```text
-> /chat Analyze this project
-
-✔ Workspace discovered
-
-✔ Project indexed
-
-✔ Python modules analyzed
-
-✔ Architecture identified
-
-✔ Dependencies inspected
-
-✔ Documentation loaded
-
-────────────────────────────────────
-
-Recommendations
-
-• Separate Infrastructure layer
-
-• Remove duplicated services
-
-• Increase unit test coverage
-
-• Generate Architecture Decision Records
-
-• Refactor configuration management
-
-• Improve dependency inversion
-
-────────────────────────────────────
-
-Estimated Complexity: Medium
-
-Technical Debt: Low
-
-Overall Architecture Score: A-
-```
-
----
-
-# 🎯 Engineering Philosophy
-
-SEOS is designed to support software engineers throughout the complete lifecycle of software development.
-
-Instead of generating isolated code snippets, the platform understands projects, coordinates specialized agents, preserves engineering context, and assists with architecture, implementation, documentation, testing, maintenance, and continuous improvement.
-
----
-
-# 📚 Main Commands
+# 💬 Main Commands
 
 | Command | Description |
 |----------|-------------|
-| `/chat <message>` | Talk to the LLM (remembers context and can delegate tasks). |
-| `/help [command]` | Show detailed help for commands. |
-| `/tree` | Display the current project tree. |
-| `/find <pattern>` | Search files and directories inside the workspace. |
-| `/translate <file> <language>` | Translate a document while preserving formatting. |
-| `/summarize <file>` | Generate a concise summary of a document. |
-| `/rewrite <file>` | Improve the quality and readability of a document. |
-| `/migrate <file> <language>` | Translate source code between programming languages. |
-| `/symbols <file>` | Display classes, methods and functions from a source file. |
-| `/review <file>` | Review code for bugs, vulnerabilities and best practices. |
-| `/create <type> <name>` | Generate project scaffolding or engineering artifacts. |
-| `/test` | Execute the project's test suite. |
-| `/git <command>` | Execute Git operations from within SEOS. |
-| `/metrics` | Display session metrics and token usage statistics. |
-| `/serve` | Launch the REST API service. |
-| `/mcp list <server>` | List available tools from an MCP server. |
-| `/sprint <requirement>` | Launch an autonomous multi-agent engineering workflow. |
-
----
-
-# 🗂 Project Structure
-
-```text
-seos/
-│
-├── docs/
-│   ├── architecture/
-│   ├── knowledge/
-│   ├── api/
-│   ├── guides/
-│   └── sprints/
-│
-├── src/
-│   └── seos/
-│       ├── agents/
-│       ├── analyzers/
-│       ├── api/
-│       ├── cli/
-│       ├── commands/
-│       ├── core/
-│       ├── document_engine/
-│       ├── integrations/
-│       ├── knowledge/
-│       ├── managers/
-│       ├── processors/
-│       ├── providers/
-│       ├── services/
-│       ├── skills/
-│       ├── workspace/
-│       └── version.py
-│
-├── plugins/
-│
-├── tests/
-│
-├── .env.example
-├── pyproject.toml
-├── requirements.txt
-├── LICENSE
-└── README.md
-```
-
----
-
-# 📈 Roadmap
-
-## Version 1.x
-
-```text
-██████████████████████████░░░░ 85%
-```
-
-### Completed
-
-- [x] Local-First Architecture
-- [x] Multi-Provider LLM Support
-- [x] Workspace Management
-- [x] Configuration System
-- [x] Document Translation
-- [x] Document Rewriting
-- [x] Document Summarization
-- [x] Python AST Analysis
-- [x] Code Review
-- [x] Refactoring Foundation
-- [x] REST API Foundation
-
-### In Progress
-
-- [ ] VS Code Extension
-- [ ] Multi-Agent Workflow
-- [ ] Plugin Framework
-
----
-
-## Version 2.x
-
-```text
-███████░░░░░░░░░░░░░░░░░░░░ 25%
-```
-
-### Planned
-
-- [ ] Distributed Agents
-- [ ] Persistent Memory
-- [ ] Semantic Code Search (RAG)
-- [ ] Knowledge Graph
-- [ ] Autonomous Sprint Execution
-- [ ] Advanced Project Analysis
-- [ ] Architecture Visualization
-- [ ] Enterprise Authentication
-- [ ] Web Dashboard
-- [ ] MCP Server Integration
-
----
-
-## Version 3.x
-
-```text
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0%
-```
-
-### Vision
-
-- [ ] Self-Improving Agents
-- [ ] Autonomous Software Factory
-- [ ] Cross-Repository Reasoning
-- [ ] Distributed Engineering Teams
-- [ ] AI Project Management
-- [ ] CI/CD Orchestration
-- [ ] Cloud Deployment Automation
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome.
-
-Whether you are fixing bugs, improving documentation, implementing new providers, or creating new engineering agents, your contributions help SEOS evolve.
-
-Please read:
-
-```text
-CONTRIBUTING.md
-```
-
-before submitting a Pull Request.
+| `/chat <message>` | Talk to SEOS. Generated code is written directly to disk when applicable. |
+| `/sprint <requirement>` | Execute an autonomous multi-agent development workflow. |
+| `/write [path/file.ext]` | Extract generated code from the last AI response into a file. |
+| `/sequence <file>` | Generate a Mermaid sequence diagram from execution flow. |
+| `/impact <file>` | Analyze dependency impact. |
+| `/translate <folder> <language>` | Batch translate documents. |
+| `/help [command]` | Display detailed command help. |
 
 ---
 
@@ -824,36 +279,3 @@ before submitting a Pull Request.
 Distributed under the **MIT License**.
 
 See the **LICENSE** file for additional information.
-
----
-
-# ⭐ Support the Project
-
-If SEOS helps you in your daily software engineering workflow, consider supporting the project.
-
-Ways to help:
-
-- ⭐ Star the repository on GitHub.
-- 🐛 Report bugs and suggest improvements.
-- 💡 Propose new engineering features.
-- 🔌 Develop plugins or integrations.
-- 📖 Improve the documentation.
-- 🧪 Test new releases and provide feedback.
-
-Every contribution—large or small—helps SEOS become a better Software Engineering Operating System for the entire community.
-
----
-
-<div align="center">
-
-### **Software Engineering Operating System**
-
-**The AI Operating System for Software Engineering**
-
-**Analyze • Design • Build • Refactor • Document • Test • Deploy**
-
----
-
-Made with ❤️ for Software Engineers.
-
-</div>

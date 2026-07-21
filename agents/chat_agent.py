@@ -3,13 +3,15 @@ Chat Agent.
 """
 
 import re
+from pathlib import Path
 from rich.console import Console
 from agents.base_agent import BaseAgent
+from services.file_writer_service import FileWriterService
 
 
 class ChatAgent(BaseAgent):
     description = (
-        "Talk to the LLM. Can delegate tasks to other agents. Usage: /chat <message>"
+        "Talk to the LLM. Autonomously executes file generation. Usage: /chat <message>"
     )
 
     def execute(self, argument: str) -> str:
@@ -23,8 +25,7 @@ class ChatAgent(BaseAgent):
         if vector_context:
             context_instruction = (
                 "\n\nPROJECT CONTEXT (Retrieved from local codebase):\n"
-                "Use the following code snippets to answer the user's question if relevant. "
-                "Ignore it if the question is general.\n\n"
+                "Use the following code snippets to answer the user's question if relevant.\n\n"
                 f"{vector_context}\n\n---\n"
             )
             if system_prompt:
@@ -38,45 +39,43 @@ class ChatAgent(BaseAgent):
             )
         # -----------------------
 
-        delegation_instructions = (
+        autonomous_instructions = (
             "\n\nCRITICAL ORCHESTRATION RULES:\n"
-            "You are an orchestrator and a helpful assistant. You can delegate tasks to other agents using the EXACT format: DELEGATE: /<command> <argument>\n"
-            "Available agents for delegation:\n"
-            "- /create <type> <Name>: ONLY when the user explicitly asks to CREATE, GENERATE, or WRITE a code file.\n"
-            "- /review <file>: ONLY when the user explicitly asks to REVIEW or AUDIT a specific code file.\n"
-            "- /refactor <file> <instruction>: ONLY when the user explicitly asks to REFACTOR a specific file.\n"
-            "- /translate <file> <lang>: ONLY when the user explicitly asks to TRANSLATE a document.\n"
-            "IMPORTANT: If the user is greeting you, asking general questions, or discussing concepts, DO NOT DELEGATE. Respond directly.\n"
-            "If you provide code blocks in your response, ALWAYS specify the target file path on the first line of the block, like: ```python src/models/user.py\n"
-            "If you delegate, do not add any other text or explanations. Example: User says 'create a class UserDTO'. You MUST respond EXACTLY: DELEGATE: /create class UserDTO"
+            "You are an autonomous AI engineer. If the user asks you to CREATE, GENERATE, WRITE, or MODIFY code or files:\n"
+            "1. DO NOT respond with markdown code blocks in text.\n"
+            "2. DO NOT explain the code.\n"
+            "3. You MUST respond with a valid JSON array containing objects with 'path' and 'code' keys.\n"
+            "Example response format:\n"
+            '```json\n[\n  {"path": "src/models/user.py", "code": "class User:\\\\n    pass"}\n]\n```\n'
+            "If the user asks a general question or wants an explanation, respond normally with text.\n"
         )
 
         if system_prompt:
-            system_prompt += delegation_instructions
+            system_prompt += autonomous_instructions
         else:
-            system_prompt = delegation_instructions.strip()
+            system_prompt = autonomous_instructions.strip()
 
         history = self.context.conversation_service.get_history()
         response = self.context.llm.generate(
             user_prompt, system=system_prompt, history=history
         )
 
-        match = re.search(r"DELEGATE:\s*(/\S+)\s*(.*)", response)
-        if match:
-            command = match.group(1).replace("/", "")
-            arg = match.group(2).strip()
+        project = self.context.project
+        if project:
+            file_writer = FileWriterService(
+                Path(project.root),
+                self.context.audit_service,
+                self.context.metrics_service,
+            )
+            # Pasamos el user_prompt para que el interceptor busque la ruta si el LLM fue terco
+            execution_log = file_writer.process_response(response, user_prompt)
 
-            if not self.context.agent_service.agent_manager.get(command):
-                return response
-
-            console = Console()
-            console.print(f"\n[bold yellow]Delegating to /{command}...[/bold yellow]")
-            final_response = self.context.agent_service.delegate(command, arg)
-
-            self.context.conversation_service.add_message("user", user_prompt)
-            self.context.conversation_service.add_message("assistant", final_response)
-
-            return final_response
+            if execution_log:
+                self.context.conversation_service.add_message("user", user_prompt)
+                self.context.conversation_service.add_message(
+                    "assistant", execution_log
+                )
+                return execution_log
 
         self.context.conversation_service.add_message("user", user_prompt)
         self.context.conversation_service.add_message("assistant", response)

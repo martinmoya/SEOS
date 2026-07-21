@@ -10,7 +10,9 @@ from services.code_generator import CodeGenerator
 
 
 class CreateAgent(BaseProjectAgent):
-    description = "Generate a Python boilerplate file. Usage: /create <type> <Name>"
+    description = (
+        "Generate a Python boilerplate file. Usage: /create <type> <Name|path/Name>"
+    )
 
     def execute(self, argument: str) -> str:
         try:
@@ -23,23 +25,32 @@ class CreateAgent(BaseProjectAgent):
             return "Usage: /create <type> <name> (e.g., /create class UserDTO)"
 
         element_type = parts[0].lower()
-        name = parts[1].strip()
+        raw_name = parts[1].strip()
 
         generator = CodeGenerator(self.context.llm)
 
-        print(f"\nGenerating {element_type} '{name}'... Please wait.\n")
+        print(f"\nGenerating {element_type} '{raw_name}'... Please wait.\n")
 
-        code = generator.generate(element_type, name)
+        code = generator.generate(element_type, raw_name)
 
-        name_clean = re.sub(
-            r"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_", name
-        ).lower()
-        filename = name_clean + ".py"
-
-        target_dir = Path(project.root) / "projects"
-        target_dir.mkdir(parents=True, exist_ok=True)
-
-        filepath = target_dir / filename
+        # Si el usuario pasó una ruta (ej: src/models/User), respetarla
+        if "/" in raw_name or "\\" in raw_name:
+            clean_path = raw_name.replace("\\", "/").lstrip("./")
+            filepath = Path(project.root) / clean_path
+            # Asegurar que tenga extensión .py
+            if filepath.suffix != ".py":
+                filepath = filepath.with_suffix(".py")
+            filepath.parent.mkdir(parents=True, exist_ok=True)
+            filename = filepath.name
+        else:
+            # Si no hay ruta, usar el sandbox projects/
+            name_clean = re.sub(
+                r"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_", raw_name
+            ).lower()
+            filename = name_clean + ".py"
+            target_dir = Path(project.root) / "projects"
+            target_dir.mkdir(parents=True, exist_ok=True)
+            filepath = target_dir / filename
 
         try:
             filepath.write_text(code, encoding="utf-8")

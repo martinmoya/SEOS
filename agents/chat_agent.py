@@ -32,7 +32,6 @@ class ChatAgent(BaseAgent):
             else:
                 system_prompt = context_instruction.strip()
 
-            # Aviso visual para saber que el RAG funcionó
             console = Console()
             console.print(
                 "\n[dim yellow]💡 RAG Context injected from Vector DB.[/dim yellow]"
@@ -48,6 +47,7 @@ class ChatAgent(BaseAgent):
             "- /refactor <file> <instruction>: ONLY when the user explicitly asks to REFACTOR a specific file.\n"
             "- /translate <file> <lang>: ONLY when the user explicitly asks to TRANSLATE a document.\n"
             "IMPORTANT: If the user is greeting you, asking general questions, or discussing concepts, DO NOT DELEGATE. Respond directly.\n"
+            "If you provide code blocks in your response, ALWAYS specify the target file path on the first line of the block, like: ```python src/models/user.py\n"
             "If you delegate, do not add any other text or explanations. Example: User says 'create a class UserDTO'. You MUST respond EXACTLY: DELEGATE: /create class UserDTO"
         )
 

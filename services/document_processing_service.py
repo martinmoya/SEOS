@@ -39,25 +39,27 @@ class DocumentProcessingService:
         dest.write_text(translated, encoding="utf-8")
 
     def _process_pdf(self, source: Path, dest: Path):
-        from pypdf import PdfReader
-        from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak
+        # Usamos el nuevo lector avanzado con OCR
+        from documents.pdf_reader import PdfReaderDocument
+        from reportlab.platypus import SimpleDocTemplate, Paragraph
         from reportlab.lib.styles import getSampleStyleSheet
 
-        reader = PdfReader(source)
+        reader = PdfReaderDocument()
+        text = reader.read(source)
+
+        # Si el lector no pudo extraer nada (ni con OCR), abortamos
+        if not text.strip():
+            raise ValueError(
+                "Could not extract text from PDF. OCR might have failed or file is empty."
+            )
+
+        translated = self.processor.process(text)
+
         styles = getSampleStyleSheet()
         story = []
-
-        for page in reader.pages:
-            text = page.extract_text()
-            if text and text.strip():
-                translated = self.processor.process(text)
-                for line in translated.splitlines():
-                    if line.strip():
-                        story.append(Paragraph(line, styles["Normal"]))
-            story.append(PageBreak())
-
-        if story and isinstance(story[-1], PageBreak):
-            story.pop()
+        for line in translated.splitlines():
+            if line.strip():
+                story.append(Paragraph(line, styles["Normal"]))
 
         pdf = SimpleDocTemplate(str(dest))
         pdf.build(story)

@@ -1,6 +1,6 @@
 """
 Workspace Service.
-Implements workspace use cases.
+Implements workspace use cases, including multi-project management.
 """
 
 from pathlib import Path
@@ -25,3 +25,13 @@ class WorkspaceService:
 
     def current(self):
         return self.workspace.active_project
+
+    def list_projects(self) -> list:
+        return list(self.workspace._projects.values())
+
+    def switch(self, name: str) -> str:
+        project = self.workspace.get(name)
+        if project:
+            self.workspace._active = project
+            return f"Switched to project: {project.name}"
+        return f"Project '{name}' not found in session. Use /projects to see open projects."

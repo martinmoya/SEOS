@@ -9,7 +9,7 @@ from services.document_processing_service import DocumentProcessingService
 
 
 class SummarizeAgent(BaseProjectAgent):
-    description = "Generate a summary of a document. Usage: /summarize <file>"
+    description = "Summarize a document or folder. Usage: /summarize <file|folder>"
 
     def execute(self, argument: str) -> str:
         try:
@@ -17,21 +17,54 @@ class SummarizeAgent(BaseProjectAgent):
         except RuntimeError as ex:
             return str(ex)
 
-        filename = argument.strip()
-        if not filename:
-            return "Usage: /summarize <file>"
+        path_str = argument.strip()
+        if not path_str:
+            return "Usage: /summarize <file|folder>"
 
-        source = Path(project.root) / filename
+        source = Path(project.root) / path_str
         if not source.exists():
-            return f'File not found: "{filename}"'
+            return f'Path not found: "{path_str}"'
 
+        processor = SummaryProcessor(self.context.llm)
+        service = DocumentProcessingService(processor)
+
+        if source.is_dir():
+            return self._process_batch(source, service)
+        else:
+            return self._process_single(source, service)
+
+    def _process_single(self, source: Path, service: DocumentProcessingService) -> str:
+        print(f"\nSummarizing {source.name}... Please wait.\n")
         try:
-            processor = SummaryProcessor(self.context.llm)
-            service = DocumentProcessingService(processor)
-
-            print("\nSummarizing document... Please wait.\n")
-            destination = service.process(source, "summary")
-
-            return f"Summary completed successfully.\nCreated: {destination.name}"
+            dest = service.process(source, "summary")
+            return f"Summary completed successfully.\nCreated: {dest.name}"
         except Exception as ex:
             return f"Failed to summarize: {ex}"
+
+    def _process_batch(
+        self, source_dir: Path, service: DocumentProcessingService
+    ) -> str:
+        valid_exts = {".txt", ".md", ".pdf", ".docx", ".xlsx", ".pptx"}
+        files = [f for f in source_dir.rglob("*") if f.suffix.lower() in valid_exts]
+
+        if not files:
+            return f"No supported documents found in folder: {source_dir.name}"
+
+        print(
+            f"\n[bold blue]Found {len(files)} documents. Starting batch summarization...[/bold blue]"
+        )
+
+        success = 0
+        errors = []
+        for f in files:
+            print(f"   -> Summarizing {f.name}...")
+            try:
+                service.process(f, "summary")
+                success += 1
+            except Exception as ex:
+                errors.append(f"{f.name}: {ex}")
+
+        report = f"Batch summarization finished. Success: {success}/{len(files)}."
+        if errors:
+            report += "\n[bold red]Errors:[/bold red]\n" + "\n".join(errors)
+        return report

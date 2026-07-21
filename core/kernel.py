@@ -28,7 +28,6 @@ from services.audit_service import AuditService
 
 from managers.agent_manager import AgentManager
 
-# Agents
 from agents.chat_agent import ChatAgent
 from agents.open_agent import OpenAgent
 from agents.info_agent import InfoAgent
@@ -60,6 +59,12 @@ from agents.mcp_agent import McpAgent
 from agents.metrics_agent import MetricsAgent
 from agents.audit_agent import AuditAgent
 from agents.adr_agent import AdrAgent
+from agents.list_agent import ListAgent
+from agents.load_agent import LoadAgent
+from agents.mkdir_agent import MkdirAgent
+from agents.ls_agent import LsAgent
+from agents.save_agent import SaveAgent
+from agents.write_agent import WriteAgent
 
 from ui.tui_app import SeosApp
 
@@ -151,6 +156,14 @@ class Kernel:
         self.agent_manager.register("audit", AuditAgent(context))
         self.agent_manager.register("adr", AdrAgent(context))
 
+        # Nuevos agentes Sprint 34
+        self.agent_manager.register("list", ListAgent(context))
+        self.agent_manager.register("load", LoadAgent(context))
+        self.agent_manager.register("mkdir", MkdirAgent(context))
+        self.agent_manager.register("ls", LsAgent(context))
+        self.agent_manager.register("save", SaveAgent(context))
+        self.agent_manager.register("write", WriteAgent(context))
+
         plugin_manager = PluginManager()
         loaded = plugin_manager.load_plugins(self.agent_manager, context)
         if loaded:
@@ -166,7 +179,6 @@ class Kernel:
         )
 
     def run(self):
-        """Arranca la interfaz gráfica de consola (TUI)."""
         try:
             self.initialize()
             self.console.print("[bold blue]Starting TUI...[/bold blue]")
@@ -182,7 +194,6 @@ class Kernel:
         self.shutdown()
 
     def run_headless(self):
-        """Arranca el servidor REST sin interfaz gráfica, ideal para servidores."""
         try:
             self.initialize()
             self.console.print(
@@ -190,7 +201,6 @@ class Kernel:
             )
             import uvicorn
 
-            # El servidor corre bloqueando el hilo principal
             uvicorn.run("api.rest_app:app", host="0.0.0.0", port=8080, log_level="info")
         except Exception as ex:
             self.console.print(

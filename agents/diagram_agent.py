@@ -1,6 +1,5 @@
 """
 Diagram Agent.
-Generates and saves Mermaid.js diagrams in Markdown files.
 """
 
 import re
@@ -28,14 +27,15 @@ class DiagramAgent(BaseProjectAgent):
         print("\nGenerating diagram... Please wait.\n")
         mermaid_code = generator.generate(argument)
 
-        # Nombre de archivo basado en las primeras palabras
+        # Sanitizar nombre de archivo: quitar espacios y caracteres especiales
         words = argument.lower().split()[:3]
-        filename = (
-            "diagram_" + "_".join(re.sub(r"[^a-z0-9]", "", w) for w in words) + ".md"
-        )
+        clean_name = "_".join(re.sub(r"[^a-z0-9]", "", w) for w in words)
+        if not clean_name:
+            clean_name = "diagram"
+
+        filename = f"diagram_{clean_name}.md"
         filepath = Path(project.root) / filename
 
-        # Guardar como Markdown para que se renderice en GitHub/VS Code
         content = f"# Diagram\n\n```mermaid\n{mermaid_code}\n```"
 
         try:

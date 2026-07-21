@@ -1,6 +1,5 @@
 """
 SEOS TUI Application.
-Full-screen terminal user interface built with Textual.
 """
 
 import os
@@ -43,8 +42,7 @@ class SeosApp(App):
             yield Tree("SEOS Project", id="tree-view")
             yield RichLog(id="chat-view", markup=True)
         yield Input(
-            placeholder="Type a command (e.g., /help or /sprint 'Create login module')",
-            id="cmd-input",
+            placeholder="Type a command (e.g., /help or /chat Hello)", id="cmd-input"
         )
         yield Footer()
 
@@ -53,9 +51,7 @@ class SeosApp(App):
         self.sub_title = "Software Engineering Operating System"
         self.build_tree()
         chat = self.query_one("#chat-view")
-
-        # MENSAJE DE BIENVENIDA MÁGICO
-        chat.write("[bold cyan]🚀 Welcome to SEOS v2.0.0[/bold cyan]")
+        chat.write("[bold cyan]🚀 Welcome to SEOS v2.1.0[/bold cyan]")
         chat.write(f"[dim]Current Workspace: {os.getcwd()}[/dim]")
         chat.write("\n[bold]How can I help you today?[/bold]")
         chat.write("  • Ask a question: [cyan]/chat How does this project work?[/cyan]")
@@ -108,29 +104,54 @@ class SeosApp(App):
             self.exit()
             return
 
-        command, argument = self.kernel.parser.parse(cmd_text)
+        command, argument, redirect_file = self.kernel.parser.parse(cmd_text)
+
+        # Capturar la salida en una variable para poder redirigirla si es necesario
+        output_lines = []
 
         if command == "help":
             if argument:
                 agent = self.kernel.agent_manager.get(argument)
                 if agent:
-                    chat.write(f"[cyan]/{argument}[/cyan]\n  {agent.description}")
+                    output_lines.append(
+                        f"[cyan]/{argument}[/cyan]\n  {agent.description}"
+                    )
                 else:
-                    chat.write(f"[red]Unknown command:[/red] /{argument}")
+                    output_lines.append(f"[red]Unknown command:[/red] /{argument}")
             else:
-                chat.write("[bold]Available commands:[/bold]")
+                output_lines.append("[bold]Available commands:[/bold]")
                 for cmd in sorted(self.kernel.agent_manager.list()):
-                    chat.write(f"  [cyan]/{cmd}[/cyan]")
-                chat.write("  [cyan]/help[/cyan] [command]")
-                chat.write("  [cyan]/exit[/cyan] (or /quit, /bye)")
-            return
+                    output_lines.append(f"  [cyan]/{cmd}[/cyan]")
+                output_lines.append("  [cyan]/help[/cyan] [command]")
+                output_lines.append("  [cyan]/exit[/cyan] (or /quit, /bye)")
 
-        agent = self.kernel.agent_manager.get(command)
-        if agent:
-            try:
-                response = agent.execute(argument)
-                chat.write(response)
-            except Exception as ex:
-                chat.write(f"[bold red]ERROR:[/bold red] {ex}")
         else:
-            chat.write(f"[red]Unknown command:[/red] /{command}")
+            agent = self.kernel.agent_manager.get(command)
+            if agent:
+                try:
+                    response = agent.execute(argument)
+                    output_lines.append(response)
+                except Exception as ex:
+                    output_lines.append(f"[bold red]ERROR:[/bold red] {ex}")
+            else:
+                output_lines.append(f"[red]Unknown command:[/red] /{command}")
+
+        # Procesar salida: redirigir a archivo o imprimir en chat
+        if redirect_file:
+            try:
+                # Limpiar tags de Rich para el archivo de texto plano
+                import re
+
+                clean_output = "\n".join(output_lines)
+                clean_output = re.sub(r"\[/?[a-zA-Z0-9 _#=]+\]", "", clean_output)
+
+                with open(redirect_file, "w", encoding="utf-8") as f:
+                    f.write(clean_output)
+                chat.write(
+                    f"[bold green]Output successfully saved to:[/bold green] {redirect_file}"
+                )
+            except Exception as ex:
+                chat.write(f"[bold red]Error saving to file:[/bold red] {ex}")
+        else:
+            for line in output_lines:
+                chat.write(line)

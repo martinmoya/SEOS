@@ -69,6 +69,8 @@ from agents.reindex_agent import ReindexAgent
 from agents.projects_agent import ProjectsAgent
 from agents.switch_agent import SwitchAgent
 from agents.install_agent import InstallAgent
+from agents.impact_agent import ImpactAgent
+from agents.deadcode_agent import DeadCodeAgent
 
 from ui.tui_app import SeosApp
 
@@ -171,6 +173,8 @@ class Kernel:
         self.agent_manager.register("projects", ProjectsAgent(context))
         self.agent_manager.register("switch", SwitchAgent(context))
         self.agent_manager.register("install", InstallAgent(context))
+        self.agent_manager.register("impact", ImpactAgent(context))
+        self.agent_manager.register("deadcode", DeadCodeAgent(context))
 
         plugin_manager = PluginManager()
         loaded = plugin_manager.load_plugins(self.agent_manager, context)

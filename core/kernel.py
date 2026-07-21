@@ -71,6 +71,7 @@ from agents.switch_agent import SwitchAgent
 from agents.install_agent import InstallAgent
 from agents.impact_agent import ImpactAgent
 from agents.deadcode_agent import DeadCodeAgent
+from agents.sequence_agent import SequenceAgent
 
 from ui.tui_app import SeosApp
 
@@ -175,6 +176,7 @@ class Kernel:
         self.agent_manager.register("install", InstallAgent(context))
         self.agent_manager.register("impact", ImpactAgent(context))
         self.agent_manager.register("deadcode", DeadCodeAgent(context))
+        self.agent_manager.register("sequence", SequenceAgent(context))
 
         plugin_manager = PluginManager()
         loaded = plugin_manager.load_plugins(self.agent_manager, context)

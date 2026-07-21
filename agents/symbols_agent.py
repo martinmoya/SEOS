@@ -9,7 +9,7 @@ from skills.python_skill import PythonSkill
 
 class SymbolsAgent(BaseProjectAgent):
     description = (
-        "Display classes, methods, and functions in a code file. Usage: /symbols <file>"
+        "Display classes and functions in any code file. Usage: /symbols <file>"
     )
 
     def execute(self, argument: str) -> str:

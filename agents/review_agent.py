@@ -1,6 +1,6 @@
 """
 Review Agent.
-Performs code reviews on Python files.
+Performs code reviews on any source file.
 """
 
 from pathlib import Path
@@ -10,7 +10,7 @@ from services.code_reviewer import CodeReviewer
 
 class ReviewAgent(BaseProjectAgent):
     description = (
-        "Review a Python file for bugs and vulnerabilities. Usage: /review <file>"
+        "Review a code file for bugs and vulnerabilities. Usage: /review <file>"
     )
 
     def execute(self, argument: str) -> str:
@@ -24,10 +24,11 @@ class ReviewAgent(BaseProjectAgent):
             return "Usage: /review <file>"
 
         filepath = Path(project.root) / filename
-        if not filepath.exists() or filepath.suffix != ".py":
-            return f"File not found or not a Python file: {filename}"
+        if not filepath.exists():
+            return f"File not found: {filename}"
 
         print("\nReviewing code... Please wait.\n")
 
         reviewer = CodeReviewer(self.context.llm)
+        # Pasamos la extensión al reviewer para que el LLM sepa el contexto
         return reviewer.review(filepath)

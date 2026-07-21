@@ -1,6 +1,6 @@
 """
 Refactor Agent.
-Modifies existing Python files safely.
+Modifies existing source files safely.
 """
 
 from pathlib import Path
@@ -9,9 +9,7 @@ from services.refactoring_engine import RefactoringEngine
 
 
 class RefactorAgent(BaseProjectAgent):
-    description = (
-        "Refactor an existing Python file. Usage: /refactor <file> <instruction>"
-    )
+    description = "Refactor an existing file. Usage: /refactor <file> <instruction>"
 
     def execute(self, argument: str) -> str:
         try:
@@ -27,8 +25,8 @@ class RefactorAgent(BaseProjectAgent):
         instruction = parts[1]
 
         filepath = Path(project.root) / filename
-        if not filepath.exists() or filepath.suffix != ".py":
-            return f"File not found or not a Python file: {filename}"
+        if not filepath.exists():
+            return f"File not found: {filename}"
 
         print("\nRefactoring code... Please wait.\n")
 

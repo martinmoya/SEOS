@@ -10,13 +10,13 @@ from knowledge.code_knowledge import CodeKnowledge
 
 class UniversalAnalyzer:
     def __init__(self):
-        # Patrones regex para clases y funciones en múltiples lenguajes
-        # Soporta: Python, Java, JS, TS, C#, Go, Rust, C++, PHP
+        # Añadimos soporte para 'sub' (Perl) y 'package' (Perl/Ruby)
         self.class_pattern = re.compile(
-            r"\b(?:class|interface|struct|enum|record)\s+([A-Za-z0-9_]+)", re.IGNORECASE
+            r"\b(?:class|interface|struct|enum|record|package)\s+([A-Za-z0-9_]+)",
+            re.IGNORECASE,
         )
         self.func_pattern = re.compile(
-            r"\b(?:def|func|fun|fn|function|public|private|protected|static|void|int|string|bool|var|let|const)\b.*?\b([A-Za-z0-9_]+)\s*\(",
+            r"\b(?:def|func|fun|fn|function|sub|public|private|protected|static|void|int|string|bool|var|let|const)\b.*?\b([A-Za-z0-9_]+)\s*\(",
             re.MULTILINE,
         )
 
@@ -31,7 +31,7 @@ class UniversalAnalyzer:
         lines = source_code.splitlines()
 
         for line_num, line in enumerate(lines, start=1):
-            # Buscar Clases
+            # Buscar Clases / Packages
             for match in self.class_pattern.finditer(line):
                 knowledge.add(
                     {
@@ -42,11 +42,20 @@ class UniversalAnalyzer:
                     }
                 )
 
-            # Buscar Funciones/Métodos (excluyendo palabras clave de control)
+            # Buscar Funciones / Métodos / Subrutinas
             for match in self.func_pattern.finditer(line):
                 func_name = match.group(1)
-                # Ignorar estructuras de control que coincidan por accidente
-                if func_name not in ["if", "for", "while", "switch", "catch", "return"]:
+                if func_name not in [
+                    "if",
+                    "for",
+                    "while",
+                    "switch",
+                    "catch",
+                    "return",
+                    "my",
+                    "our",
+                    "local",
+                ]:
                     knowledge.add(
                         {
                             "type": "function",

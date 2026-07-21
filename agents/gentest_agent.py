@@ -1,6 +1,6 @@
 """
 Gentest Agent.
-Generates pytest tests for a Python file.
+Generates unit tests for any source file.
 """
 
 from pathlib import Path
@@ -9,7 +9,7 @@ from services.test_generator import TestGenerator
 
 
 class GenTestAgent(BaseProjectAgent):
-    description = "Generate pytest unit tests for a file. Usage: /gentest <file>"
+    description = "Generate unit tests for a file. Usage: /gentest <file>"
 
     def execute(self, argument: str) -> str:
         try:
@@ -21,22 +21,16 @@ class GenTestAgent(BaseProjectAgent):
         if not filename:
             return "Usage: /gentest <file>"
 
-        # Buscamos primero en el sandbox de proyectos, luego en la raíz
-        sandbox_path = Path(project.root) / "projects" / filename
-        root_path = Path(project.root) / filename
-
-        if sandbox_path.exists() and sandbox_path.suffix == ".py":
-            filepath = sandbox_path
-        elif root_path.exists() and root_path.suffix == ".py":
-            filepath = root_path
-        else:
-            return f"File not found or not a Python file: {filename}"
+        filepath = Path(project.root) / filename
+        if not filepath.exists():
+            return f"File not found: {filename}"
 
         print("\nGenerating tests... Please wait.\n")
 
         generator = TestGenerator(self.context.llm)
         test_code = generator.generate(filepath)
 
+        # Mantener la extensión, pero añadir prefijo test_
         test_filename = f"test_{filepath.name}"
         test_filepath = filepath.with_name(test_filename)
 
